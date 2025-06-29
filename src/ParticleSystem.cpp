@@ -6,6 +6,7 @@ ParticleSystem::ParticleSystem()
 	  dist(0.0f, 1.0f),
 	  position({400, 300}),
 	  e_EmitterType(POINT),
+	  e_ParticleType(CIRCULER),
 	  emission_rate(50.0f),
 	  emission_timer(0.0f),
 	  velocity({0, -50}),
@@ -172,28 +173,53 @@ void ParticleSystem::Draw()
 		if (!p.b_Active)
 			continue;
 
-		// DrawCircleV(p.position, p.size, p.color);
-
-		// Alternative: Draw as rotated rectangle
-		// Rectangle rect = {p.position.x - p.size / 2, p.position.y - p.size / 2, p.size, p.size};
-		// DrawRectanglePro(rect, {p.size / 2, p.size / 2}, p.rotation * RAD2DEG, p.color);
-
-		// Draw as triangle
-		Vector2 vertices[3] = {
-			{0, -p.size / 2},
-			{-p.size / 2, p.size / 2},
-			{p.size / 2, p.size / 2},
-		};
-		for (int i = 0; i < 3; ++i)
+		switch (e_ParticleType)
 		{
-			Vector2 &v1 = vertices[i];
-			Vector2 &v2 = vertices[(i + 1) % 3];
-			DrawLineEx(
-				{p.position.x + v1.x * cosf(p.rotation) - v1.y * sinf(p.rotation),
-				 p.position.y + v1.x * sinf(p.rotation) + v1.y * cosf(p.rotation)},
-				{p.position.x + v2.x * cosf(p.rotation) - v2.y * sinf(p.rotation),
-				 p.position.y + v2.x * sinf(p.rotation) + v2.y * cosf(p.rotation)},
-				2, p.color);
+		case CIRCULER:
+		{
+			DrawCircleV(p.position, p.size, p.color);
+			break;
+		}
+
+		case SQUARE:
+		{
+			Rectangle rect = {
+				p.position.x - p.size / 2,
+				p.position.y - p.size / 2,
+				p.size,
+				p.size};
+			DrawRectanglePro(
+				rect,
+				{p.size / 2, p.size / 2},
+				p.rotation * RAD2DEG,
+				p.color);
+
+			break;
+		}
+
+		case TRIANGLE:
+		{
+			Vector2 vertices[3] = {
+				{0, -p.size / 2},
+				{-p.size / 2, p.size / 2},
+				{p.size / 2, p.size / 2}};
+
+			for (int idx = 0; idx < 3; ++idx)
+			{
+				Vector2 &v1 = vertices[idx];
+				Vector2 &v2 = vertices[(idx + 1) % 3];
+
+				Vector2 a = {
+					p.position.x + v1.x * cosf(p.rotation) - v1.y * sinf(p.rotation),
+					p.position.y + v1.x * sinf(p.rotation) + v1.y * cosf(p.rotation)};
+				Vector2 b = {
+					p.position.x + v2.x * cosf(p.rotation) - v2.y * sinf(p.rotation),
+					p.position.y + v2.x * sinf(p.rotation) + v2.y * cosf(p.rotation)};
+
+				DrawLineEx(a, b, 2, p.color);
+			}
+			break;
+		}
 		}
 	}
 
@@ -228,11 +254,20 @@ void f_DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Separator();
 
 	ImGui::Text("Emitter");
-	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
-	int current_type = static_cast<int>(ps.e_EmitterType);
 
-	ImGui::Combo("Type", &current_type, s_EMITTER_TYPES, IM_ARRAYSIZE(s_EMITTER_TYPES));
-	ps.e_EmitterType = static_cast<EmitterType>(current_type);
+	static const char *s_EMITTER_TYPES[4] = {"Point", "Line", "Circle", "Rectangle"};
+	ImGui::Combo(
+		"Type",
+		reinterpret_cast<int *>(&ps.e_EmitterType),
+		s_EMITTER_TYPES,
+		IM_ARRAYSIZE(s_EMITTER_TYPES));
+
+	static const char *s_PARTICLE_TYPES[3] = {"Circular", "Square", "Triangle"};
+	ImGui::Combo(
+		"Particle Type",
+		reinterpret_cast<int *>(&ps.e_ParticleType),
+		s_PARTICLE_TYPES,
+		IM_ARRAYSIZE(s_PARTICLE_TYPES));
 
 	Rectangle draw_area = {
 		GetScreenWidth() * 0.05f,

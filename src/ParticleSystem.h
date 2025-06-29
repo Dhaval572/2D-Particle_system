@@ -46,7 +46,7 @@ private:
 
 	// Emitter properties
 	EmitterType e_EmitterType;
-	ParticleType e_PType;
+	ParticleType e_ParticleType;
 	float emission_rate;
 	float emission_timer;
 
