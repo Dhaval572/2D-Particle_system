@@ -5,7 +5,7 @@ ParticleSystem::ParticleSystem()
 	  rng(std::random_device{}()),
 	  dist(0.0f, 1.0f),
 	  position({400, 300}),
-	  emitterType(POINT),
+	  emitter_type(POINT),
 	  emission_rate(50.0f),
 	  emission_timer(0.0f),
 	  velocity({0, -50}),
@@ -28,7 +28,7 @@ ParticleSystem::ParticleSystem()
 
 Vector2 ParticleSystem::GetEmissionPoint()
 {
-	switch (emitterType)
+	switch (emitter_type)
 	{
 	case POINT:
 		return position;
@@ -129,7 +129,7 @@ void ParticleSystem::DrawEmitterShape()
 {
 	Color shape_color = {128, 128, 128, 100}; // Gray with transparency
 
-	switch (emitterType)
+	switch (emitter_type)
 	{
 	case POINT:
 		DrawCircleV(position, 3, shape_color);
@@ -229,10 +229,10 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 
 	ImGui::Text("Emitter");
 	static const char *emitterTypes[] = {"Point", "Line", "Circle", "Rectangle"};
-	int currentType = static_cast<int>(ps.emitterType);
+	int currentType = static_cast<int>(ps.emitter_type);
 
 	ImGui::Combo("Type", &currentType, emitterTypes, IM_ARRAYSIZE(emitterTypes));
-	ps.emitterType = static_cast<EmitterType>(currentType);
+	ps.emitter_type = static_cast<EmitterType>(currentType);
 
 	Rectangle draw_area = {
 		GetScreenWidth() * 0.05f,
@@ -245,7 +245,7 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::SliderFloat("Emitter Y", &ps.position.y, draw_area.y, draw_area.y + draw_area.height);
 
 	// Emitter shape properties
-	switch (ps.emitterType)
+	switch (ps.emitter_type)
 	{
 	case LINE:
 		ImGui::SliderFloat("Line Length", &ps.line_length, 10.0f, 300.0f);

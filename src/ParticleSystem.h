@@ -45,8 +45,8 @@ private:
 	std::uniform_real_distribution<float> dist;
 
 	// Emitter properties
-	EmitterType emitterType;
-	ParticleType pType;
+	EmitterType emitter_type;
+	ParticleType p_type;
 	float emission_rate;
 	float emission_timer;
 
