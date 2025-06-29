@@ -76,7 +76,7 @@ private:
 	void DrawEmitterShape();
 	void Clear();
 	int GetParticleCount() const;
-	friend void f_DrawParticleSystemUI(ParticleSystem &ps);
+	friend void DrawParticleSystemUI(ParticleSystem &ps);
 
 public:
 	Vector2 position;

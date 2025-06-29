@@ -137,10 +137,12 @@ void ParticleSystem::DrawEmitterShape()
 		break;
 
 	case LINE:
-		DrawLineEx(
+		DrawLineEx
+		(
 			{position.x - line_length / 2, position.y},
 			{position.x + line_length / 2, position.y},
-			2, shape_color);
+			2, shape_color
+		);
 		break;
 
 	case CIRCLE:
@@ -193,7 +195,6 @@ void ParticleSystem::Draw()
 				{p.size / 2, p.size / 2},
 				p.rotation * RAD2DEG,
 				p.color);
-
 			break;
 		}
 
@@ -238,7 +239,7 @@ int ParticleSystem::GetParticleCount() const
 }
 
 // ImGui interface for particle system
-void f_DrawParticleSystemUI(ParticleSystem &ps)
+void DrawParticleSystemUI(ParticleSystem &ps)
 {
 	float s_width = static_cast<float>(GetScreenWidth());
 	float s_height = static_cast<float>(GetScreenHeight());
@@ -252,9 +253,7 @@ void f_DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::SliderInt("Max Particles", &ps.max_particles, 100, 5000);
 
 	ImGui::Separator();
-
 	ImGui::Text("Emitter");
-
 	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
 	ImGui::Combo(
 		"Type",
@@ -269,11 +268,13 @@ void f_DrawParticleSystemUI(ParticleSystem &ps)
 		s_PARTICLE_TYPES,
 		IM_ARRAYSIZE(s_PARTICLE_TYPES));
 
-	Rectangle draw_area = {
+	Rectangle draw_area = 
+	{
 		GetScreenWidth() * 0.05f,
 		GetScreenHeight() * 0.1f,
 		GetScreenWidth() * 0.6f,
-		GetScreenHeight() * 0.8f};
+		GetScreenHeight() * 0.8f
+	};
 
 	// Slider inputs for position
 	ImGui::SliderFloat("Emitter X", &ps.position.x, draw_area.x, draw_area.x + draw_area.width);

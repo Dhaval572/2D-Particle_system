@@ -42,7 +42,7 @@ void App::Render()
 	particle_system.Draw();
 
 	rlImGuiBegin();
-	f_DrawParticleSystemUI(particle_system);
+	DrawParticleSystemUI(particle_system);
 	rlImGuiEnd();
 
 	EndDrawing();
