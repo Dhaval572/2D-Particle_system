@@ -23,8 +23,8 @@ void App::Run()
 
 	while (!WindowShouldClose())
 	{
-		float deltaTime = GetFrameTime();
-		Update(deltaTime);
+		float delta_time = GetFrameTime();
+		Update(delta_time);
 		Render();
 	}
 }
@@ -42,7 +42,7 @@ void App::Render()
 	particle_system.Draw();
 
 	rlImGuiBegin();
-	DrawParticleSystemUI(particle_system);
+	f_DrawParticleSystemUI(particle_system);
 	rlImGuiEnd();
 
 	EndDrawing();

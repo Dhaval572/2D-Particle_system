@@ -18,7 +18,7 @@ struct t_Particle
 	float size;
 	float rotation;
 	float rotation_speed;
-	bool active;
+	bool b_Active;
 };
 
 enum ParticleType
@@ -67,7 +67,7 @@ private:
 	float circle_radius;
 	Vector2 rect_size;
 
-	bool active;
+	bool b_Active;
 	int max_particles;
 
 	// Core methods
@@ -76,7 +76,7 @@ private:
 	void DrawEmitterShape();
 	void Clear();
 	int GetParticleCount() const;
-	friend void DrawParticleSystemUI(ParticleSystem &ps);
+	friend void f_DrawParticleSystemUI(ParticleSystem &ps);
 
 public:
 	Vector2 position;

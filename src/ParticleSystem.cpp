@@ -21,7 +21,7 @@ ParticleSystem::ParticleSystem()
 	  line_length(100.0f),
 	  circle_radius(50.0f),
 	  rect_size({100, 100}),
-	  active(true)
+	  b_Active(true)
 {
 	particles.reserve(max_particles);
 }
@@ -78,14 +78,14 @@ void ParticleSystem::EmitParticle()
 	p.size = min_size + dist(rng) * (max_size - min_size);
 	p.rotation = 0;
 	p.rotation_speed = rotation_speed + (dist(rng) - 0.5f) * 2.0f;
-	p.active = true;
+	p.b_Active = true;
 
 	particles.push_back(p);
 }
 
 void ParticleSystem::Update(float deltaTime)
 {
-	if (!active)
+	if (!b_Active)
 		return;
 
 	// Emit new particles
@@ -101,7 +101,7 @@ void ParticleSystem::Update(float deltaTime)
 	{
 		t_Particle &p = *it;
 
-		if (!p.active || p.life <= 0)
+		if (!p.b_Active || p.life <= 0)
 		{
 			it = particles.erase(it);
 			continue;
@@ -169,7 +169,7 @@ void ParticleSystem::Draw()
 
 	for (const auto &p : particles)
 	{
-		if (!p.active)
+		if (!p.b_Active)
 			continue;
 
 		// DrawCircleV(p.position, p.size, p.color);
@@ -212,7 +212,7 @@ int ParticleSystem::GetParticleCount() const
 }
 
 // ImGui interface for particle system
-void DrawParticleSystemUI(ParticleSystem &ps)
+void f_DrawParticleSystemUI(ParticleSystem &ps)
 {
 	float s_width = static_cast<float>(GetScreenWidth());
 	float s_height = static_cast<float>(GetScreenHeight());
@@ -221,18 +221,18 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Begin("Particle System Editor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
 	// Basic controls
-	ImGui::Checkbox("Active", &ps.active);
+	ImGui::Checkbox("Active", &ps.b_Active);
 	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 200.0f);
 	ImGui::SliderInt("Max Particles", &ps.max_particles, 100, 5000);
 
 	ImGui::Separator();
 
 	ImGui::Text("Emitter");
-	static const char *emitterTypes[] = {"Point", "Line", "Circle", "Rectangle"};
-	int currentType = static_cast<int>(ps.e_EmitterType);
+	static const char *s_EmitterTypes[] = {"Point", "Line", "Circle", "Rectangle"};
+	int current_type = static_cast<int>(ps.e_EmitterType);
 
-	ImGui::Combo("Type", &currentType, emitterTypes, IM_ARRAYSIZE(emitterTypes));
-	ps.e_EmitterType = static_cast<EmitterType>(currentType);
+	ImGui::Combo("Type", &current_type, s_EmitterTypes, IM_ARRAYSIZE(s_EmitterTypes));
+	ps.e_EmitterType = static_cast<EmitterType>(current_type);
 
 	Rectangle draw_area = {
 		GetScreenWidth() * 0.05f,
