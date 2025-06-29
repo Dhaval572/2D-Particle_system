@@ -7,7 +7,7 @@
 #include <raymath.h>
 #include "Utility.h"
 
-struct Particle
+struct t_Particle
 {
 	Vector2 position;
 	Vector2 velocity;
@@ -40,7 +40,7 @@ enum EmitterType
 class ParticleSystem
 {
 private:
-	std::vector<Particle> particles;
+	std::vector<t_Particle> particles;
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> dist;
 

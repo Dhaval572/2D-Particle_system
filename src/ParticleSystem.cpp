@@ -67,7 +67,7 @@ void ParticleSystem::EmitParticle()
 	if (particles.size() >= max_particles)
 		return;
 
-	Particle p;
+	t_Particle p;
 	p.position = GetEmissionPoint();
 	p.velocity = {
 		velocity.x + (dist(rng) - 0.5f) * velocity_variation.x,
@@ -99,7 +99,7 @@ void ParticleSystem::Update(float deltaTime)
 	// Update existing particles
 	for (auto it = particles.begin(); it != particles.end(); ++it)
 	{
-		Particle &p = *it;
+		t_Particle &p = *it;
 
 		if (!p.active || p.life <= 0)
 		{
