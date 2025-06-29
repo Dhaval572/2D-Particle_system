@@ -1,10 +1,10 @@
 #pragma once
+#include <raylib.h>
 #include <rlImGui.h>
 #include <imgui.h>
 #include <vector>
 #include <random>
 #include <raymath.h>
-#include <cmath>
 #include "Utility.h"
 
 struct Particle

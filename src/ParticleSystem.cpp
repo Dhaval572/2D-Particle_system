@@ -43,8 +43,8 @@ Vector2 ParticleSystem::GetEmissionPoint()
 
 	case CIRCLE:
 	{
-		float angle = dist(rng) * 2.0f * PI;
-		float radius = dist(rng) * circleRadius;
+		float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
+		float radius = dist(rng) * circleRadius; // [0, circleRadius] 
 		return {
 			position.x + cosf(angle) * radius,
 			position.y + sinf(angle) * radius};
