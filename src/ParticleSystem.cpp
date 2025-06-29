@@ -255,14 +255,14 @@ void f_DrawParticleSystemUI(ParticleSystem &ps)
 
 	ImGui::Text("Emitter");
 
-	static const char *s_EMITTER_TYPES[4] = {"Point", "Line", "Circle", "Rectangle"};
+	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
 	ImGui::Combo(
 		"Type",
 		reinterpret_cast<int *>(&ps.e_EmitterType),
 		s_EMITTER_TYPES,
 		IM_ARRAYSIZE(s_EMITTER_TYPES));
 
-	static const char *s_PARTICLE_TYPES[3] = {"Circular", "Square", "Triangle"};
+	static const char *s_PARTICLE_TYPES[] = {"Circular", "Square", "Triangle"};
 	ImGui::Combo(
 		"Particle Type",
 		reinterpret_cast<int *>(&ps.e_ParticleType),
