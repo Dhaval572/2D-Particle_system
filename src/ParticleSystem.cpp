@@ -127,29 +127,29 @@ void ParticleSystem::Update(float deltaTime)
 
 void ParticleSystem::DrawEmitterShape()
 {
-	Color shapeColor = {128, 128, 128, 100}; // Gray with transparency
+	Color shape_color = {128, 128, 128, 100}; // Gray with transparency
 
 	switch (emitterType)
 	{
 	case POINT:
-		DrawCircleV(position, 3, shapeColor);
+		DrawCircleV(position, 3, shape_color);
 		break;
 
 	case LINE:
 		DrawLineEx(
 			{position.x - line_length / 2, position.y},
 			{position.x + line_length / 2, position.y},
-			2, shapeColor);
+			2, shape_color);
 		break;
 
 	case CIRCLE:
-		DrawCircleLinesV(position, circle_radius, shapeColor);
+		DrawCircleLinesV(position, circle_radius, shape_color);
 		break;
 
 	case RECTANGLE:
 		DrawRectangleLinesEx(
 			{position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y},
-			2, shapeColor);
+			2, shape_color);
 		break;
 	}
 }
@@ -214,10 +214,10 @@ int ParticleSystem::GetParticleCount() const
 // ImGui interface for particle system
 void DrawParticleSystemUI(ParticleSystem &ps)
 {
-	float screenW = static_cast<float>(GetScreenWidth());
-	float screenH = static_cast<float>(GetScreenHeight());
-	ImGui::SetNextWindowPos(ImVec2(screenW * 0.7f, screenH * 0.06f));
-	ImGui::SetNextWindowSize(ImVec2(screenW * 0.30f, screenH * 0.9f));
+	float s_width = static_cast<float>(GetScreenWidth());
+	float s_height = static_cast<float>(GetScreenHeight());
+	ImGui::SetNextWindowPos(ImVec2(s_width * 0.7f, s_height * 0.06f));
+	ImGui::SetNextWindowSize(ImVec2(s_width * 0.30f, s_height * 0.9f));
 	ImGui::Begin("Particle System Editor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
 	// Basic controls
