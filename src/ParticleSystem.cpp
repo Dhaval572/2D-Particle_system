@@ -282,16 +282,16 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Separator();
 	ImGui::Text("Colors");
 
-	ImVec4 startCol = ColorToImVec4(ps.start_color);
-	if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float *>(&startCol)))
+	ImVec4 start_col = ColorToImVec4(ps.start_color);
+	if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float *>(&start_col)))
 	{
-		ps.start_color = ImVec4ToColor(startCol);
+		ps.start_color = ImVec4ToColor(start_col);
 	}
 
-	ImVec4 endCol = ColorToImVec4(ps.end_color);
-	if (ImGui::ColorEdit4("End Color", reinterpret_cast<float *>(&endCol)))
+	ImVec4 end_col = ColorToImVec4(ps.end_color);
+	if (ImGui::ColorEdit4("End Color", reinterpret_cast<float *>(&end_col)))
 	{
-		ps.end_color = ImVec4ToColor(endCol);
+		ps.end_color = ImVec4ToColor(end_col);
 	}
 
 	ImGui::Separator();
