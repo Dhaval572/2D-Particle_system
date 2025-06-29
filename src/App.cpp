@@ -14,7 +14,7 @@ void App::Init()
 	rlImGuiSetup(true);
 	ImCustomTheme();
 
-	particleSystem.position = {100, 350};
+	particle_system.position = {100, 350};
 }
 
 void App::Run()
@@ -31,7 +31,7 @@ void App::Run()
 
 void App::Update(float dt)
 {
-	particleSystem.Update(dt);
+	particle_system.Update(dt);
 }
 
 void App::Render()
@@ -39,10 +39,10 @@ void App::Render()
 	BeginDrawing();
 	ClearBackground(BLACK);
 
-	particleSystem.Draw();
+	particle_system.Draw();
 
 	rlImGuiBegin();
-	DrawParticleSystemUI(particleSystem);
+	DrawParticleSystemUI(particle_system);
 	rlImGuiEnd();
 
 	EndDrawing();

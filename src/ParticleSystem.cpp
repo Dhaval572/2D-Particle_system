@@ -1,29 +1,29 @@
 #include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem()
-	: maxParticles(1000),
+	: max_particles(1000),
 	  rng(std::random_device{}()),
 	  dist(0.0f, 1.0f),
 	  position({400, 300}),
 	  emitterType(POINT),
-	  emissionRate(50.0f),
-	  emissionTimer(0.0f),
+	  emission_rate(50.0f),
+	  emission_timer(0.0f),
 	  velocity({0, -50}),
-	  velocityVariation({20, 20}),
+	  velocity_variation({20, 20}),
 	  acceleration({0, 98}),
-	  startColor(RED),
-	  endColor(ORANGE),
-	  minLife(1.0f),
-	  maxLife(3.0f),
-	  minSize(2.0f),
-	  maxSize(8.0f),
-	  rotationSpeed(0.0f),
-	  lineLength(100.0f),
-	  circleRadius(50.0f),
-	  rectSize({100, 100}),
+	  start_color(RED),
+	  end_color(ORANGE),
+	  min_life(1.0f),
+	  max_life(3.0f),
+	  min_size(2.0f),
+	  max_size(8.0f),
+	  rotation_speed(0.0f),
+	  line_length(100.0f),
+	  circle_radius(50.0f),
+	  rect_size({100, 100}),
 	  active(true)
 {
-	particles.reserve(maxParticles);
+	particles.reserve(max_particles);
 }
 
 Vector2 ParticleSystem::GetEmissionPoint()
@@ -37,14 +37,14 @@ Vector2 ParticleSystem::GetEmissionPoint()
 	{
 		float t = dist(rng);
 		return {
-			position.x + (t - 0.5f) * lineLength,
+			position.x + (t - 0.5f) * line_length,
 			position.y};
 	}
 
 	case CIRCLE:
 	{
 		float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
-		float radius = dist(rng) * circleRadius; // [0, circleRadius] 
+		float radius = dist(rng) * circle_radius;	  // [0, circle_radius]
 		return {
 			position.x + cosf(angle) * radius,
 			position.y + sinf(angle) * radius};
@@ -53,8 +53,8 @@ Vector2 ParticleSystem::GetEmissionPoint()
 	case RECTANGLE:
 	{
 		return {
-			position.x + (dist(rng) - 0.5f) * rectSize.x,
-			position.y + (dist(rng) - 0.5f) * rectSize.y};
+			position.x + (dist(rng) - 0.5f) * rect_size.x,
+			position.y + (dist(rng) - 0.5f) * rect_size.y};
 	}
 
 	default:
@@ -64,20 +64,20 @@ Vector2 ParticleSystem::GetEmissionPoint()
 
 void ParticleSystem::EmitParticle()
 {
-	if (particles.size() >= maxParticles)
+	if (particles.size() >= max_particles)
 		return;
 
 	Particle p;
 	p.position = GetEmissionPoint();
 	p.velocity = {
-		velocity.x + (dist(rng) - 0.5f) * velocityVariation.x,
-		velocity.y + (dist(rng) - 0.5f) * velocityVariation.y};
+		velocity.x + (dist(rng) - 0.5f) * velocity_variation.x,
+		velocity.y + (dist(rng) - 0.5f) * velocity_variation.y};
 	p.acceleration = acceleration;
-	p.color = startColor;
-	p.life = p.maxLife = minLife + dist(rng) * (maxLife - minLife);
-	p.size = minSize + dist(rng) * (maxSize - minSize);
+	p.color = start_color;
+	p.life = p.max_life = min_life + dist(rng) * (max_life - min_life);
+	p.size = min_size + dist(rng) * (max_size - min_size);
 	p.rotation = 0;
-	p.rotationSpeed = rotationSpeed + (dist(rng) - 0.5f) * 2.0f;
+	p.rotation_speed = rotation_speed + (dist(rng) - 0.5f) * 2.0f;
 	p.active = true;
 
 	particles.push_back(p);
@@ -89,11 +89,11 @@ void ParticleSystem::Update(float deltaTime)
 		return;
 
 	// Emit new particles
-	emissionTimer += deltaTime;
-	while (emissionTimer >= 1.0f / emissionRate)
+	emission_timer += deltaTime;
+	while (emission_timer >= 1.0f / emission_rate)
 	{
 		EmitParticle();
-		emissionTimer -= 1.0f / emissionRate;
+		emission_timer -= 1.0f / emission_rate;
 	}
 
 	// Update existing particles
@@ -113,15 +113,15 @@ void ParticleSystem::Update(float deltaTime)
 		p.position.x += p.velocity.x * deltaTime;
 		p.position.y += p.velocity.y * deltaTime;
 
-		p.rotation += p.rotationSpeed * deltaTime;
+		p.rotation += p.rotation_speed * deltaTime;
 		p.life -= deltaTime;
 
 		// This makes color transparent
-		float t = 1.0f - (p.life / p.maxLife);
-		p.color.r = Clamp(startColor.r * (1.0f - t) + endColor.r * t, 0, 255);
-		p.color.g = Clamp(startColor.g * (1.0f - t) + endColor.g * t, 0, 255);
-		p.color.b = Clamp(startColor.b * (1.0f - t) + endColor.b * t, 0, 255);
-		p.color.a = Clamp(255.0f * (p.life / p.maxLife), 0, 255);
+		float t = 1.0f - (p.life / p.max_life);
+		p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
+		p.color.g = Clamp(start_color.g * (1.0f - t) + end_color.g * t, 0, 255);
+		p.color.b = Clamp(start_color.b * (1.0f - t) + end_color.b * t, 0, 255);
+		p.color.a = Clamp(255.0f * (p.life / p.max_life), 0, 255);
 	}
 }
 
@@ -137,18 +137,18 @@ void ParticleSystem::DrawEmitterShape()
 
 	case LINE:
 		DrawLineEx(
-			{position.x - lineLength / 2, position.y},
-			{position.x + lineLength / 2, position.y},
+			{position.x - line_length / 2, position.y},
+			{position.x + line_length / 2, position.y},
 			2, shapeColor);
 		break;
 
 	case CIRCLE:
-		DrawCircleLinesV(position, circleRadius, shapeColor);
+		DrawCircleLinesV(position, circle_radius, shapeColor);
 		break;
 
 	case RECTANGLE:
 		DrawRectangleLinesEx(
-			{position.x - rectSize.x / 2, position.y - rectSize.y / 2, rectSize.x, rectSize.y},	
+			{position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y},
 			2, shapeColor);
 		break;
 	}
@@ -172,7 +172,6 @@ void ParticleSystem::Draw()
 		if (!p.active)
 			continue;
 
-		// Draw particle as a circle (you can customize this)
 		// DrawCircleV(p.position, p.size, p.color);
 
 		// Alternative: Draw as rotated rectangle
@@ -223,8 +222,8 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 
 	// Basic controls
 	ImGui::Checkbox("Active", &ps.active);
-	ImGui::SliderFloat("Emission Rate", &ps.emissionRate, 1.0f, 200.0f);
-	ImGui::SliderInt("Max Particles", &ps.maxParticles, 100, 5000);
+	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 200.0f);
+	ImGui::SliderInt("Max Particles", &ps.max_particles, 100, 5000);
 
 	ImGui::Separator();
 
@@ -249,15 +248,15 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	switch (ps.emitterType)
 	{
 	case LINE:
-		ImGui::SliderFloat("Line Length", &ps.lineLength, 10.0f, 300.0f);
+		ImGui::SliderFloat("Line Length", &ps.line_length, 10.0f, 300.0f);
 		break;
 
 	case CIRCLE:
-		ImGui::SliderFloat("Circle Radius", &ps.circleRadius, 10.0f, 200.0f);
+		ImGui::SliderFloat("Circle Radius", &ps.circle_radius, 10.0f, 200.0f);
 		break;
 
 	case RECTANGLE:
-		ImGui::SliderFloat2("Rectangle Size", (float *)&ps.rectSize, 10.0f, 300.0f);
+		ImGui::SliderFloat2("Rectangle Size", (float *)&ps.rect_size, 10.0f, 300.0f);
 		break;
 	}
 
@@ -266,33 +265,33 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::SliderFloat("Velocity X", &ps.velocity.x, -200.0f, 200.0f);
 	ImGui::SliderFloat("Velocity Y", &ps.velocity.y, -200.0f, 200.0f);
 
-	ImGui::SliderFloat("Velocity Variation X", &ps.velocityVariation.x, 0.0f, 100.0f);
-	ImGui::SliderFloat("Velocity Variation Y", &ps.velocityVariation.y, 0.0f, 100.0f);
+	ImGui::SliderFloat("Velocity Variation X", &ps.velocity_variation.x, 0.0f, 100.0f);
+	ImGui::SliderFloat("Velocity Variation Y", &ps.velocity_variation.y, 0.0f, 100.0f);
 
 	ImGui::SliderFloat("Acceleration X", &ps.acceleration.x, -500.0f, 500.0f);
 	ImGui::SliderFloat("Acceleration Y", &ps.acceleration.y, -500.0f, 500.0f);
 
-	ImGui::SliderFloat("Min Life", &ps.minLife, 0.1f, 5.0f);
-	ImGui::SliderFloat("Max Life", &ps.maxLife, 0.1f, 10.0f);
+	ImGui::SliderFloat("Min Life", &ps.min_life, 0.1f, 5.0f);
+	ImGui::SliderFloat("Max Life", &ps.max_life, 0.1f, 10.0f);
 
-	ImGui::SliderFloat("Min Size", &ps.minSize, 1.0f, 20.0f);
-	ImGui::SliderFloat("Max Size", &ps.maxSize, 1.0f, 50.0f);
+	ImGui::SliderFloat("Min Size", &ps.min_size, 1.0f, 20.0f);
+	ImGui::SliderFloat("Max Size", &ps.max_size, 1.0f, 50.0f);
 
-	ImGui::SliderFloat("Rotation Speed", &ps.rotationSpeed, -10.0f, 10.0f);
+	ImGui::SliderFloat("Rotation Speed", &ps.rotation_speed, -10.0f, 10.0f);
 
 	ImGui::Separator();
 	ImGui::Text("Colors");
 
-	ImVec4 startCol = ColorToImVec4(ps.startColor);
+	ImVec4 startCol = ColorToImVec4(ps.start_color);
 	if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float *>(&startCol)))
 	{
-		ps.startColor = ImVec4ToColor(startCol);
+		ps.start_color = ImVec4ToColor(startCol);
 	}
 
-	ImVec4 endCol = ColorToImVec4(ps.endColor);
+	ImVec4 endCol = ColorToImVec4(ps.end_color);
 	if (ImGui::ColorEdit4("End Color", reinterpret_cast<float *>(&endCol)))
 	{
-		ps.endColor = ImVec4ToColor(endCol);
+		ps.end_color = ImVec4ToColor(endCol);
 	}
 
 	ImGui::Separator();

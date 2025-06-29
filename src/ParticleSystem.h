@@ -14,14 +14,20 @@ struct Particle
 	Vector2 acceleration;
 	Color color;
 	float life;
-	float maxLife;
+	float max_life;
 	float size;
 	float rotation;
-	float rotationSpeed;
+	float rotation_speed;
 	bool active;
 };
 
-// Emitter types
+enum ParticleType
+{
+	CIRCULER,
+	SQUARE,
+	TRIANGLE
+};
+
 enum EmitterType
 {
 	POINT,
@@ -40,28 +46,29 @@ private:
 
 	// Emitter properties
 	EmitterType emitterType;
-	float emissionRate;
-	float emissionTimer;
+	ParticleType pType;
+	float emission_rate;
+	float emission_timer;
 
 	// Particle properties
 	Vector2 velocity;
-	Vector2 velocityVariation;
+	Vector2 velocity_variation;
 	Vector2 acceleration;
-	Color startColor;
-	Color endColor;
-	float minLife;
-	float maxLife;
-	float minSize;
-	float maxSize;
-	float rotationSpeed;
+	Color start_color;
+	Color end_color;
+	float min_life;
+	float max_life;
+	float min_size;
+	float max_size;
+	float rotation_speed;
 
 	// Emitter shape properties
-	float lineLength;
-	float circleRadius;
-	Vector2 rectSize;
+	float line_length;
+	float circle_radius;
+	Vector2 rect_size;
 
 	bool active;
-	int maxParticles;
+	int max_particles;
 
 	// Core methods
 	Vector2 GetEmissionPoint();

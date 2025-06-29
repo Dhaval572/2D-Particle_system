@@ -14,5 +14,5 @@ private:
 	void Render();
 	void Shutdown();
 
-	ParticleSystem particleSystem;
+	ParticleSystem particle_system;
 };
