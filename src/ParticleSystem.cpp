@@ -157,15 +157,15 @@ void ParticleSystem::DrawEmitterShape()
 void ParticleSystem::Draw()
 {
 
-	Rectangle drawArea =
+	Rectangle draw_area =
 		{
 			GetScreenWidth() * 0.05f,
 			GetScreenHeight() * 0.1f,
 			GetScreenWidth() * 0.6f,
 			GetScreenHeight() * 0.8f};
 
-	DrawRectangleLinesEx(drawArea, 2, GRAY);
-	BeginScissorMode(drawArea.x, drawArea.y, drawArea.width, drawArea.height);
+	DrawRectangleLinesEx(draw_area, 2, GRAY);
+	BeginScissorMode(draw_area.x, draw_area.y, draw_area.width, draw_area.height);
 
 	for (const auto &p : particles)
 	{
@@ -234,15 +234,15 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Combo("Type", &currentType, emitterTypes, IM_ARRAYSIZE(emitterTypes));
 	ps.emitterType = static_cast<EmitterType>(currentType);
 
-	Rectangle drawArea = {
+	Rectangle draw_area = {
 		GetScreenWidth() * 0.05f,
 		GetScreenHeight() * 0.1f,
 		GetScreenWidth() * 0.6f,
 		GetScreenHeight() * 0.8f};
 
 	// Slider inputs for position
-	ImGui::SliderFloat("Emitter X", &ps.position.x, drawArea.x, drawArea.x + drawArea.width);
-	ImGui::SliderFloat("Emitter Y", &ps.position.y, drawArea.y, drawArea.y + drawArea.height);
+	ImGui::SliderFloat("Emitter X", &ps.position.x, draw_area.x, draw_area.x + draw_area.width);
+	ImGui::SliderFloat("Emitter Y", &ps.position.y, draw_area.y, draw_area.y + draw_area.height);
 
 	// Emitter shape properties
 	switch (ps.emitterType)
