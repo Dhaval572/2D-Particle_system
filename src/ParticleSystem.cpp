@@ -231,7 +231,7 @@ void ParticleSystem::Draw()
 			break;
 		}
 
-		case KWORD:
+		case K_CHAR:
 		{
 			Vector2 vertices[6] =
 				{
@@ -313,9 +313,9 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 		s_EMITTER_TYPES,
 		IM_ARRAYSIZE(s_EMITTER_TYPES));
 
-	static const char *s_PARTICLE_TYPES[] = {"Circular", "Square", "Triangle", "K-Word"};
+	static const char *s_PARTICLE_TYPES[] = {"Circular", "Square", "Triangle", "K-Symbol"};
 	ImGui::Combo(
-		"Particle Type",
+		"Particle Type",	
 		reinterpret_cast<int *>(&ps.e_ParticleType),
 		s_PARTICLE_TYPES,
 		IM_ARRAYSIZE(s_PARTICLE_TYPES));

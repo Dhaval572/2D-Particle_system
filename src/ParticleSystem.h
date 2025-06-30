@@ -26,7 +26,7 @@ enum ParticleType
 	CIRCULER,
 	SQUARE,
 	TRIANGLE,
-	KWORD
+	K_CHAR
 };
 
 enum EmitterType
