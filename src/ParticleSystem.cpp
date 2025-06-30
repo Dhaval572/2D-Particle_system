@@ -200,10 +200,12 @@ void ParticleSystem::Draw()
 
 		case TRIANGLE:
 		{
-			Vector2 vertices[3] = {
+			Vector2 vertices[3] = 
+			{
 				{0, -p.size / 2},
 				{-p.size / 2, p.size / 2},
-				{p.size / 2, p.size / 2}};
+				{p.size / 2, p.size / 2}
+			};
 
 			for (int idx = 0; idx < 3; ++idx)
 			{
@@ -255,18 +257,23 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Separator();
 	ImGui::Text("Emitter");
 	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
-	ImGui::Combo(
+
+	ImGui::Combo
+	(
 		"Type",
 		reinterpret_cast<int *>(&ps.e_EmitterType),
 		s_EMITTER_TYPES,
-		IM_ARRAYSIZE(s_EMITTER_TYPES));
+		IM_ARRAYSIZE(s_EMITTER_TYPES)
+	);
 
 	static const char *s_PARTICLE_TYPES[] = {"Circular", "Square", "Triangle"};
-	ImGui::Combo(
+	ImGui::Combo
+	(
 		"Particle Type",
 		reinterpret_cast<int *>(&ps.e_ParticleType),
 		s_PARTICLE_TYPES,
-		IM_ARRAYSIZE(s_PARTICLE_TYPES));
+		IM_ARRAYSIZE(s_PARTICLE_TYPES)
+	);
 
 	Rectangle draw_area = 
 	{
