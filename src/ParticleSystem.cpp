@@ -37,31 +37,25 @@ Vector2 ParticleSystem::GetEmissionPoint()
 	case LINE:
 	{
 		float t = dist(rng);
-		return 
-		{
+		return {
 			position.x + (t - 0.5f) * line_length,
-			position.y
-		};
+			position.y};
 	}
 
 	case CIRCLE:
 	{
 		float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
 		float radius = dist(rng) * circle_radius;	  // [0, circle_radius]
-		return 
-		{
+		return {
 			position.x + cosf(angle) * radius,
-			position.y + sinf(angle) * radius
-		};
+			position.y + sinf(angle) * radius};
 	}
 
 	case RECTANGLE:
 	{
-		return 
-		{
+		return {
 			position.x + (dist(rng) - 0.5f) * rect_size.x,
-			position.y + (dist(rng) - 0.5f) * rect_size.y
-		};
+			position.y + (dist(rng) - 0.5f) * rect_size.y};
 	}
 
 	default:
@@ -76,11 +70,10 @@ void ParticleSystem::EmitParticle()
 
 	t_Particle p;
 	p.position = GetEmissionPoint();
-	p.velocity = 
-	{
-		velocity.x + (dist(rng) - 0.5f) * velocity_variation.x,
-		velocity.y + (dist(rng) - 0.5f) * velocity_variation.y
-	};
+	p.velocity =
+		{
+			velocity.x + (dist(rng) - 0.5f) * velocity_variation.x,
+			velocity.y + (dist(rng) - 0.5f) * velocity_variation.y};
 	p.acceleration = acceleration;
 	p.color = start_color;
 	p.life = p.max_life = min_life + dist(rng) * (max_life - min_life);
@@ -145,12 +138,10 @@ void ParticleSystem::DrawEmitterShape()
 		break;
 
 	case LINE:
-		DrawLineEx
-		(
+		DrawLineEx(
 			{position.x - line_length / 2, position.y},
 			{position.x + line_length / 2, position.y},
-			2, shape_color
-		);
+			2, shape_color);
 		break;
 
 	case CIRCLE:
@@ -158,11 +149,9 @@ void ParticleSystem::DrawEmitterShape()
 		break;
 
 	case RECTANGLE:
-		DrawRectangleLinesEx
-		(
+		DrawRectangleLinesEx(
 			{position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y},
-			2, shape_color
-		);
+			2, shape_color);
 		break;
 	}
 }
@@ -171,12 +160,11 @@ void ParticleSystem::Draw()
 {
 
 	Rectangle draw_area =
-	{
-		GetScreenWidth() * 0.05f,
-		GetScreenHeight() * 0.1f,
-		GetScreenWidth() * 0.6f,
-		GetScreenHeight() * 0.8f
-	};
+		{
+			GetScreenWidth() * 0.05f,
+			GetScreenHeight() * 0.1f,
+			GetScreenWidth() * 0.6f,
+			GetScreenHeight() * 0.8f};
 
 	DrawRectangleLinesEx(draw_area, 2, GRAY);
 	BeginScissorMode(draw_area.x, draw_area.y, draw_area.width, draw_area.height);
@@ -196,7 +184,7 @@ void ParticleSystem::Draw()
 
 		case SQUARE:
 		{
-			Rectangle rect = 
+			Rectangle rect =
 			{
 				p.position.x - p.size / 2,
 				p.position.y - p.size / 2,
@@ -215,7 +203,7 @@ void ParticleSystem::Draw()
 
 		case TRIANGLE:
 		{
-			Vector2 vertices[3] = 
+			Vector2 vertices[3] =
 			{
 				{0, -p.size / 2},
 				{-p.size / 2, p.size / 2},
@@ -227,12 +215,12 @@ void ParticleSystem::Draw()
 				Vector2 &v1 = vertices[idx];
 				Vector2 &v2 = vertices[(idx + 1) % 3];
 
-				Vector2 a = 
+				Vector2 a =
 				{
 					p.position.x + v1.x * cosf(p.rotation) - v1.y * sinf(p.rotation),
 					p.position.y + v1.x * sinf(p.rotation) + v1.y * cosf(p.rotation)
 				};
-				Vector2 b = 
+				Vector2 b =
 				{
 					p.position.x + v2.x * cosf(p.rotation) - v2.y * sinf(p.rotation),
 					p.position.y + v2.x * sinf(p.rotation) + v2.y * cosf(p.rotation)
@@ -242,6 +230,49 @@ void ParticleSystem::Draw()
 			}
 			break;
 		}
+
+		case KWORD:
+		{
+			Vector2 vertices[6] =
+				{
+					{-p.size / 2, p.size / 2},	// Top-left (vertical line top)
+					{-p.size / 2, -p.size / 2}, // Bottom-left (vertical line bottom)
+					{-p.size / 2, 0},			// Middle-left (center junction)
+					{p.size / 2, p.size / 2},	// Top-right (upper diagonal end)
+					{p.size / 2, -p.size / 2},	// Bottom-right (lower diagonal end)
+					{-p.size / 2, 0}			// Middle-left (center junction - repeated for connection)
+				};
+
+			// Define the lines that make up the K shape
+			int lines[][2] = 
+			{
+				{0, 1}, // Vertical line (left side)
+				{2, 3}, // Upper diagonal
+				{2, 4}	// Lower diagonal
+			};
+
+			// Draw each line of the K
+			for (int i = 0; i < 3; ++i)
+			{
+				Vector2 &v1 = vertices[lines[i][0]];
+				Vector2 &v2 = vertices[lines[i][1]];
+
+				// Apply rotation transformation
+				Vector2 a =
+				{
+					p.position.x + v1.x * cosf(p.rotation) - v1.y * sinf(p.rotation),
+					p.position.y + v1.x * sinf(p.rotation) + v1.y * cosf(p.rotation)
+				};
+				Vector2 b =
+				{
+					p.position.x + v2.x * cosf(p.rotation) - v2.y * sinf(p.rotation),
+					p.position.y + v2.x * sinf(p.rotation) + v2.y * cosf(p.rotation)
+				};
+
+				DrawLineEx(a, b, 2, p.color);
+			}
+		}
+
 		}
 	}
 
@@ -276,30 +307,25 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Text("Emitter");
 
 	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
-	ImGui::Combo
-	(
+	ImGui::Combo(
 		"Type",
 		reinterpret_cast<int *>(&ps.e_EmitterType),
 		s_EMITTER_TYPES,
-		IM_ARRAYSIZE(s_EMITTER_TYPES)
-	);
+		IM_ARRAYSIZE(s_EMITTER_TYPES));
 
-	static const char *s_PARTICLE_TYPES[] = {"Circular", "Square", "Triangle"};
-	ImGui::Combo
-	(
+	static const char *s_PARTICLE_TYPES[] = {"Circular", "Square", "Triangle", "K-Word"};
+	ImGui::Combo(
 		"Particle Type",
 		reinterpret_cast<int *>(&ps.e_ParticleType),
 		s_PARTICLE_TYPES,
-		IM_ARRAYSIZE(s_PARTICLE_TYPES)
-	);
+		IM_ARRAYSIZE(s_PARTICLE_TYPES));
 
-	Rectangle draw_area = 
-	{
-		GetScreenWidth() * 0.05f,
-		GetScreenHeight() * 0.1f,
-		GetScreenWidth() * 0.6f,
-		GetScreenHeight() * 0.8f
-	};
+	Rectangle draw_area =
+		{
+			GetScreenWidth() * 0.05f,
+			GetScreenHeight() * 0.1f,
+			GetScreenWidth() * 0.6f,
+			GetScreenHeight() * 0.8f};
 
 	ImGui::SliderFloat("Emitter X", &ps.position.x, draw_area.x, draw_area.x + draw_area.width);
 	ImGui::SliderFloat("Emitter Y", &ps.position.y, draw_area.y, draw_area.y + draw_area.height);

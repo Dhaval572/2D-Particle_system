@@ -25,7 +25,8 @@ enum ParticleType
 {
 	CIRCULER,
 	SQUARE,
-	TRIANGLE
+	TRIANGLE,
+	KWORD
 };
 
 enum EmitterType
