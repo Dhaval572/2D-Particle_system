@@ -92,13 +92,13 @@ void ParticleSystem::EmitParticle()
 	particles.push_back(p);
 }
 
-void ParticleSystem::Update(float deltaTime)
+void ParticleSystem::Update(float dt)
 {
 	if (!b_Active)
 		return;
 
 	// Emit new particles
-	emission_timer += deltaTime;
+	emission_timer += dt;
 	while (emission_timer >= 1.0f / emission_rate)
 	{
 		EmitParticle();
@@ -117,13 +117,13 @@ void ParticleSystem::Update(float deltaTime)
 		}
 
 		// Update physics
-		p.velocity.x += p.acceleration.x * deltaTime;
-		p.velocity.y += p.acceleration.y * deltaTime;
-		p.position.x += p.velocity.x * deltaTime;
-		p.position.y += p.velocity.y * deltaTime;
+		p.velocity.x += p.acceleration.x * dt;
+		p.velocity.y += p.acceleration.y * dt;
+		p.position.x += p.velocity.x * dt;
+		p.position.y += p.velocity.y * dt;
 
-		p.rotation += p.rotation_speed * deltaTime;
-		p.life -= deltaTime;
+		p.rotation += p.rotation_speed * dt;
+		p.life -= dt;
 
 		// This makes color transparent
 		float t = 1.0f - (p.life / p.max_life);
@@ -259,7 +259,6 @@ int ParticleSystem::GetParticleCount() const
 	return particles.size();
 }
 
-// ImGui interface for particle system
 void DrawParticleSystemUI(ParticleSystem &ps)
 {
 	float s_width = static_cast<float>(GetScreenWidth());
@@ -268,15 +267,15 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::SetNextWindowSize(ImVec2(s_width * 0.30f, s_height * 0.9f));
 	ImGui::Begin("Particle System Editor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	// Basic controls
+	// Settings
 	ImGui::Checkbox("Active", &ps.b_Active);
 	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 200.0f);
 	ImGui::SliderInt("Max Particles", &ps.max_particles, 100, 5000);
 
 	ImGui::Separator();
 	ImGui::Text("Emitter");
-	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
 
+	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
 	ImGui::Combo
 	(
 		"Type",
@@ -302,11 +301,9 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 		GetScreenHeight() * 0.8f
 	};
 
-	// Slider inputs for position
 	ImGui::SliderFloat("Emitter X", &ps.position.x, draw_area.x, draw_area.x + draw_area.width);
 	ImGui::SliderFloat("Emitter Y", &ps.position.y, draw_area.y, draw_area.y + draw_area.height);
 
-	// Emitter shape properties
 	switch (ps.e_EmitterType)
 	{
 	case LINE:

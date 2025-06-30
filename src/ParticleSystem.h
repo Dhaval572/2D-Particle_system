@@ -70,7 +70,6 @@ private:
 	bool b_Active;
 	int max_particles;
 
-	// Core methods
 	Vector2 GetEmissionPoint();
 	void EmitParticle();
 	void DrawEmitterShape();
@@ -82,6 +81,6 @@ public:
 	Vector2 position;
 
 	ParticleSystem();
-	void Update(float deltaTime);
+	void Update(float dt);
 	void Draw();
 };
