@@ -4,7 +4,7 @@ ParticleSystem::ParticleSystem()
 	: max_particles(1000),
 	  rng(std::random_device{}()),
 	  dist(0.0f, 1.0f),
-	  position({400, 300}),
+	  position({}),
 	  e_EmitterType(POINT),
 	  e_ParticleType(CIRCULER),
 	  emission_rate(50.0f),
