@@ -81,7 +81,8 @@ void ParticleSystem::EmitParticle()
 	p.velocity =
 		{
 			velocity.x + (dist(rng) - 0.5f) * velocity_variation.x,
-			velocity.y + (dist(rng) - 0.5f) * velocity_variation.y};
+			velocity.y + (dist(rng) - 0.5f) * velocity_variation.y
+		};
 	p.acceleration = acceleration;
 	p.color = start_color;
 	p.life = p.max_life = min_life + dist(rng) * (max_life - min_life);
