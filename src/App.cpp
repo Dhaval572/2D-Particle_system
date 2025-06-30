@@ -9,7 +9,7 @@ void App::Shutdown()
 void App::Init()
 {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-	InitWindow(1200, 700, "Particle System Demo");
+	InitWindow(0, 0, "Particle System Demo");
 	MaximizeWindow();
 
 	SetTargetFPS(60);
