@@ -294,8 +294,8 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 {
 	float s_width = static_cast<float>(GetScreenWidth());
 	float s_height = static_cast<float>(GetScreenHeight());
-	ImGui::SetNextWindowPos(ImVec2(s_width * 0.7f, s_height * 0.06f));
-	ImGui::SetNextWindowSize(ImVec2(s_width * 0.30f, s_height * 0.9f));
+	ImGui::SetNextWindowPos(ImVec2(s_width * 0.654f, s_height * 0.06f));
+	ImGui::SetNextWindowSize(ImVec2(s_width * 0.35f, s_height * 0.9f));
 	ImGui::Begin("Particle System Editor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
 	// Settings
