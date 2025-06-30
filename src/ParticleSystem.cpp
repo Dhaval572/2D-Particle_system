@@ -160,11 +160,12 @@ void ParticleSystem::Draw()
 {
 
 	Rectangle draw_area =
-		{
-			GetScreenWidth() * 0.05f,
-			GetScreenHeight() * 0.1f,
-			GetScreenWidth() * 0.6f,
-			GetScreenHeight() * 0.8f};
+	{
+		GetScreenWidth() * 0.05f,
+		GetScreenHeight() * 0.1f,
+		GetScreenWidth() * 0.6f,
+		GetScreenHeight() * 0.8f
+	};
 
 	DrawRectangleLinesEx(draw_area, 2, GRAY);
 	BeginScissorMode(draw_area.x, draw_area.y, draw_area.width, draw_area.height);
