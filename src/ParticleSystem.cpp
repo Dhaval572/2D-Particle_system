@@ -37,25 +37,33 @@ Vector2 ParticleSystem::GetEmissionPoint()
 	case LINE:
 	{
 		float t = dist(rng);
-		return {
+		return 
+		
+		{
 			position.x + (t - 0.5f) * line_length,
-			position.y};
+			position.y
+		
+		};
 	}
 
 	case CIRCLE:
 	{
 		float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
 		float radius = dist(rng) * circle_radius;	  // [0, circle_radius]
-		return {
+		return 
+		{
 			position.x + cosf(angle) * radius,
-			position.y + sinf(angle) * radius};
+			position.y + sinf(angle) * radius
+		};
 	}
 
 	case RECTANGLE:
 	{
-		return {
+		return 
+		{
 			position.x + (dist(rng) - 0.5f) * rect_size.x,
-			position.y + (dist(rng) - 0.5f) * rect_size.y};
+			position.y + (dist(rng) - 0.5f) * rect_size.y
+		};
 	}
 
 	default:
@@ -138,10 +146,12 @@ void ParticleSystem::DrawEmitterShape()
 		break;
 
 	case LINE:
-		DrawLineEx(
+		DrawLineEx
+		(
 			{position.x - line_length / 2, position.y},
 			{position.x + line_length / 2, position.y},
-			2, shape_color);
+			2, shape_color
+		);
 		break;
 
 	case CIRCLE:
@@ -149,9 +159,11 @@ void ParticleSystem::DrawEmitterShape()
 		break;
 
 	case RECTANGLE:
-		DrawRectangleLinesEx(
+		DrawRectangleLinesEx
+		(
 			{position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y},
-			2, shape_color);
+			2, shape_color
+		);
 		break;
 	}
 }
