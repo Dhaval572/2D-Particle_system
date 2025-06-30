@@ -308,25 +308,30 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Text("Emitter");
 
 	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
-	ImGui::Combo(
+	ImGui::Combo
+	(
 		"Type",
 		reinterpret_cast<int *>(&ps.e_EmitterType),
 		s_EMITTER_TYPES,
-		IM_ARRAYSIZE(s_EMITTER_TYPES));
+		IM_ARRAYSIZE(s_EMITTER_TYPES)
+	);
 
 	static const char *s_PARTICLE_TYPES[] = {"Circular", "Square", "Triangle", "K-Symbol"};
-	ImGui::Combo(
+	ImGui::Combo
+	(
 		"Particle Type",	
 		reinterpret_cast<int *>(&ps.e_ParticleType),
 		s_PARTICLE_TYPES,
-		IM_ARRAYSIZE(s_PARTICLE_TYPES));
+		IM_ARRAYSIZE(s_PARTICLE_TYPES)
+	);
 
 	Rectangle draw_area =
-		{
-			GetScreenWidth() * 0.05f,
-			GetScreenHeight() * 0.1f,
-			GetScreenWidth() * 0.6f,
-			GetScreenHeight() * 0.8f};
+	{
+		GetScreenWidth() * 0.05f,
+		GetScreenHeight() * 0.1f,
+		GetScreenWidth() * 0.6f,
+		GetScreenHeight() * 0.8f
+	};
 
 	ImGui::SliderFloat("Emitter X", &ps.position.x, draw_area.x, draw_area.x + draw_area.width);
 	ImGui::SliderFloat("Emitter Y", &ps.position.y, draw_area.y, draw_area.y + draw_area.height);
