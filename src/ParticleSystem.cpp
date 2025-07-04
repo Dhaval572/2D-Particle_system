@@ -346,11 +346,17 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	ImGui::SliderFloat
 	(
-		"Emitter X", &ps.position.x, draw_area.x, draw_area.x + draw_area.width
+		"Emitter X", 
+		&ps.position.x, 
+		draw_area.x, 
+		draw_area.x + draw_area.width
 	);
 	ImGui::SliderFloat
 	(
-		"Emitter Y", &ps.position.y, draw_area.y, draw_area.y + draw_area.height
+		"Emitter Y", 
+		&ps.position.y, 
+		draw_area.y, 
+		draw_area.y + draw_area.height
 	);
 
 	switch (ps.e_EmitterType)
