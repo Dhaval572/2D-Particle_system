@@ -37,8 +37,8 @@ Vector2 ParticleSystem::GetEmissionPoint()
 	case LINE:
 	{
 		float t = dist(rng);
-		return 
-		
+		return
+
 		{
 			position.x + (t - 0.5f) * line_length,
 			position.y
@@ -49,7 +49,7 @@ Vector2 ParticleSystem::GetEmissionPoint()
 	{
 		float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
 		float radius = dist(rng) * circle_radius;	  // [0, circle_radius]
-		return 
+		return
 		{
 			position.x + cosf(angle) * radius,
 			position.y + sinf(angle) * radius
@@ -58,7 +58,7 @@ Vector2 ParticleSystem::GetEmissionPoint()
 
 	case RECTANGLE:
 	{
-		return 
+		return
 		{
 			position.x + (dist(rng) - 0.5f) * rect_size.x,
 			position.y + (dist(rng) - 0.5f) * rect_size.y
@@ -78,10 +78,10 @@ void ParticleSystem::EmitParticle()
 	t_Particle p;
 	p.position = GetEmissionPoint();
 	p.velocity =
-		{
-			velocity.x + (dist(rng) - 0.5f) * velocity_variation.x,
-			velocity.y + (dist(rng) - 0.5f) * velocity_variation.y
-		};
+	{
+		velocity.x + (dist(rng) - 0.5f) * velocity_variation.x,
+		velocity.y + (dist(rng) - 0.5f) * velocity_variation.y
+	};
 	p.acceleration = acceleration;
 	p.color = start_color;
 	p.life = p.max_life = min_life + dist(rng) * (max_life - min_life);
@@ -109,7 +109,7 @@ void ParticleSystem::Update(float dt)
 	// Update existing particles
 	for (auto it = particles.begin(); it != particles.end(); ++it)
 	{
-		t_Particle &p = *it;
+		t_Particle& p = *it;
 
 		if (!p.b_Active || p.life <= 0)
 		{
@@ -137,7 +137,7 @@ void ParticleSystem::Update(float dt)
 
 void ParticleSystem::DrawEmitterShape()
 {
-	Color shape_color = {128, 128, 128, 100}; // Gray with transparency
+	Color shape_color = { 128, 128, 128, 100 }; // Gray with transparency
 
 	switch (e_EmitterType)
 	{
@@ -148,8 +148,8 @@ void ParticleSystem::DrawEmitterShape()
 	case LINE:
 		DrawLineEx
 		(
-			{position.x - line_length / 2, position.y},
-			{position.x + line_length / 2, position.y},
+			{ position.x - line_length / 2, position.y },
+			{ position.x + line_length / 2, position.y },
 			2, shape_color
 		);
 		break;
@@ -161,7 +161,7 @@ void ParticleSystem::DrawEmitterShape()
 	case RECTANGLE:
 		DrawRectangleLinesEx
 		(
-			{position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y},
+			{ position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y },
 			2, shape_color
 		);
 		break;
@@ -182,7 +182,7 @@ void ParticleSystem::Draw()
 	DrawRectangleLinesEx(draw_area, 2, GRAY);
 	BeginScissorMode(draw_area.x, draw_area.y, draw_area.width, draw_area.height);
 
-	for (const auto &p : particles)
+	for (const auto& p : particles)
 	{
 		if (!p.b_Active)
 			continue;
@@ -204,10 +204,11 @@ void ParticleSystem::Draw()
 				p.size,
 				p.size
 			};
+
 			DrawRectanglePro
 			(
 				rect,
-				{p.size / 2, p.size / 2},
+				{ p.size / 2, p.size / 2 },
 				p.rotation * RAD2DEG,
 				p.color
 			);
@@ -216,48 +217,32 @@ void ParticleSystem::Draw()
 
 		case TRIANGLE:
 		{
-			Vector2 vertices[3] =
-			{
-				{0, -p.size / 2},
-				{-p.size / 2, p.size / 2},
-				{p.size / 2, p.size / 2}
-			};
+			DrawPoly
+			(
+				p.position,
+				3,
+				p.size,
+				p.rotation * RAD2DEG,
+				p.color
+			);
 
-			for (int idx = 0; idx < 3; ++idx)
-			{
-				Vector2 &v1 = vertices[idx];
-				Vector2 &v2 = vertices[(idx + 1) % 3];
-
-				Vector2 a =
-				{
-					p.position.x + v1.x * cosf(p.rotation) - v1.y * sinf(p.rotation),
-					p.position.y + v1.x * sinf(p.rotation) + v1.y * cosf(p.rotation)
-				};
-				Vector2 b =
-				{
-					p.position.x + v2.x * cosf(p.rotation) - v2.y * sinf(p.rotation),
-					p.position.y + v2.x * sinf(p.rotation) + v2.y * cosf(p.rotation)
-				};
-
-				DrawLineEx(a, b, 2, p.color);
-			}
 			break;
 		}
 
 		case K_CHAR:
 		{
 			Vector2 vertices[6] =
-				{
-					{-p.size / 2, p.size / 2},	// Top-left (vertical line top)
-					{-p.size / 2, -p.size / 2}, // Bottom-left (vertical line bottom)
-					{-p.size / 2, 0},			// Middle-left (center junction)
-					{p.size / 2, p.size / 2},	// Top-right (upper diagonal end)
-					{p.size / 2, -p.size / 2},	// Bottom-right (lower diagonal end)
-					{-p.size / 2, 0}			// Middle-left (center junction - repeated for connection)
-				};
+			{
+				{-p.size / 2, p.size / 2},	// Top-left (vertical line top)
+				{-p.size / 2, -p.size / 2}, // Bottom-left (vertical line bottom)
+				{-p.size / 2, 0},			// Middle-left (center junction)
+				{p.size / 2, p.size / 2},	// Top-right (upper diagonal end)
+				{p.size / 2, -p.size / 2},	// Bottom-right (lower diagonal end)
+				{-p.size / 2, 0}			// Middle-left (center junction - repeated for connection)
+			};
 
 			// Define the lines that make up the K shape
-			int lines[][2] = 
+			int lines[][2] =
 			{
 				{0, 1}, // Vertical line (left side)
 				{2, 3}, // Upper diagonal
@@ -267,8 +252,8 @@ void ParticleSystem::Draw()
 			// Draw each line of the K
 			for (int i = 0; i < 3; ++i)
 			{
-				Vector2 &v1 = vertices[lines[i][0]];
-				Vector2 &v2 = vertices[lines[i][1]];
+				Vector2& v1 = vertices[lines[i][0]];
+				Vector2& v2 = vertices[lines[i][1]];
 
 				// Apply rotation transformation
 				Vector2 a =
@@ -303,7 +288,7 @@ int ParticleSystem::GetParticleCount() const
 	return particles.size();
 }
 
-void DrawParticleSystemUI(ParticleSystem &ps)
+void DrawParticleSystemUI(ParticleSystem& ps)
 {
 	float s_width = static_cast<float>(GetScreenWidth());
 	float s_height = static_cast<float>(GetScreenHeight());
@@ -319,20 +304,20 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Separator();
 	ImGui::Text("Emitter");
 
-	static const char *s_EMITTER_TYPES[] = {"Point", "Line", "Circle", "Rectangle"};
+	static const char* s_EMITTER_TYPES[] = { "Point", "Line", "Circle", "Rectangle" };
 	ImGui::Combo
 	(
 		"Type",
-		reinterpret_cast<int *>(&ps.e_EmitterType),
+		reinterpret_cast<int*>(&ps.e_EmitterType),
 		s_EMITTER_TYPES,
 		IM_ARRAYSIZE(s_EMITTER_TYPES)
 	);
 
-	static const char *s_PARTICLE_TYPES[] = {"Circular", "Square", "Triangle", "K-Symbol"};
+	static const char* s_PARTICLE_TYPES[] = { "Circular", "Square", "Triangle", "K-Symbol" };
 	ImGui::Combo
 	(
-		"Particle Type",	
-		reinterpret_cast<int *>(&ps.e_ParticleType),
+		"Particle Type",
+		reinterpret_cast<int*>(&ps.e_ParticleType),
 		s_PARTICLE_TYPES,
 		IM_ARRAYSIZE(s_PARTICLE_TYPES)
 	);
@@ -359,7 +344,7 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 		break;
 
 	case RECTANGLE:
-		ImGui::SliderFloat2("Rectangle Size", (float *)&ps.rect_size, 10.0f, 300.0f);
+		ImGui::SliderFloat2("Rectangle Size", (float*)&ps.rect_size, 10.0f, 300.0f);
 		break;
 	}
 
@@ -386,13 +371,13 @@ void DrawParticleSystemUI(ParticleSystem &ps)
 	ImGui::Text("Colors");
 
 	ImVec4 start_col = ColorToImVec4(ps.start_color);
-	if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float *>(&start_col)))
+	if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float*>(&start_col)))
 	{
 		ps.start_color = ImVec4ToColor(start_col);
 	}
 
 	ImVec4 end_col = ColorToImVec4(ps.end_color);
-	if (ImGui::ColorEdit4("End Color", reinterpret_cast<float *>(&end_col)))
+	if (ImGui::ColorEdit4("End Color", reinterpret_cast<float*>(&end_col)))
 	{
 		ps.end_color = ImVec4ToColor(end_col);
 	}
