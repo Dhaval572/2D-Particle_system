@@ -311,7 +311,6 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	ImGui::Separator();
 	ImGui::Text("Emitter");
-
 	static const char* s_EMITTER_TYPES[] = 
 	{ 
 		"Point", "Line", "Circle", "Rectangle" 
