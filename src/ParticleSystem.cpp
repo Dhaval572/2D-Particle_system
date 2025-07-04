@@ -161,7 +161,9 @@ void ParticleSystem::DrawEmitterShape()
 	case RECTANGLE:
 		DrawRectangleLinesEx
 		(
-			{ position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y },
+			{ 
+				position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y 
+			},
 			2, shape_color
 		);
 		break;
@@ -224,8 +226,7 @@ void ParticleSystem::Draw()
 				p.size,
 				p.rotation * RAD2DEG,
 				p.color
-			);
-
+			);	
 			break;
 		}
 
@@ -270,7 +271,7 @@ void ParticleSystem::Draw()
 				DrawLineEx(a, b, 2, p.color);
 			}
 		}
-
+		
 		}
 	}
 
@@ -294,7 +295,13 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	float s_height = static_cast<float>(GetScreenHeight());
 	ImGui::SetNextWindowPos(ImVec2(s_width * 0.654f, s_height * 0.06f));
 	ImGui::SetNextWindowSize(ImVec2(s_width * 0.35f, s_height * 0.9f));
-	ImGui::Begin("Particle System Editor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::Begin
+	(
+		"Particle System Editor", 
+		nullptr, 
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoMove
+	);
 
 	// Settings
 	ImGui::Checkbox("Active", &ps.b_Active);
@@ -304,7 +311,10 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::Separator();
 	ImGui::Text("Emitter");
 
-	static const char* s_EMITTER_TYPES[] = { "Point", "Line", "Circle", "Rectangle" };
+	static const char* s_EMITTER_TYPES[] = 
+	{ 
+		"Point", "Line", "Circle", "Rectangle" 
+	};
 	ImGui::Combo
 	(
 		"Type",
@@ -313,7 +323,10 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		IM_ARRAYSIZE(s_EMITTER_TYPES)
 	);
 
-	static const char* s_PARTICLE_TYPES[] = { "Circular", "Square", "Triangle", "K-Symbol" };
+	static const char* s_PARTICLE_TYPES[] = 
+	{ 
+		"Circular", "Square", "Triangle", "K-Symbol" 
+	};
 	ImGui::Combo
 	(
 		"Particle Type",
@@ -330,8 +343,14 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		GetScreenHeight() * 0.8f
 	};
 
-	ImGui::SliderFloat("Emitter X", &ps.position.x, draw_area.x, draw_area.x + draw_area.width);
-	ImGui::SliderFloat("Emitter Y", &ps.position.y, draw_area.y, draw_area.y + draw_area.height);
+	ImGui::SliderFloat
+	(
+		"Emitter X", &ps.position.x, draw_area.x, draw_area.x + draw_area.width
+	);
+	ImGui::SliderFloat
+	(
+		"Emitter Y", &ps.position.y, draw_area.y, draw_area.y + draw_area.height
+	);
 
 	switch (ps.e_EmitterType)
 	{
