@@ -162,9 +162,11 @@ void ParticleSystem::DrawEmitterShape()
 		DrawRectangleLinesEx
 		(
 			{ 
-				position.x - rect_size.x / 2, position.y - rect_size.y / 2, rect_size.x, rect_size.y 
-			},
-			2, shape_color
+				position.x - rect_size.x / 2, 
+				position.y - rect_size.y / 2, 
+				rect_size.x, 
+				rect_size.y 
+			}, 2, shape_color
 		);
 		break;
 	}
