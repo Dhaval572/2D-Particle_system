@@ -12,8 +12,8 @@ ParticleSystem::ParticleSystem()
 	  velocity({0, -50}),
 	  velocity_variation({20, 20}),
 	  acceleration({0, 98}),
-	  start_color(RED),
-	  end_color(ORANGE),
+	  start_color(DARKGREEN),
+	  end_color(GREEN),
 	  min_life(1.0f),
 	  max_life(3.0f),
 	  min_size(2.0f),
@@ -42,7 +42,6 @@ Vector2 ParticleSystem::GetEmissionPoint()
 		{
 			position.x + (t - 0.5f) * line_length,
 			position.y
-		
 		};
 	}
 
