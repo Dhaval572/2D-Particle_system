@@ -305,8 +305,8 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	// Settings
 	ImGui::Checkbox("Active", &ps.b_Active);
-	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 100.0f);
-	ImGui::SliderInt("Max Particles", &ps.max_particles, 100, 5000);
+	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 200.0f);
+	ImGui::SliderInt("Max Particles", &ps.max_particles, 200, 5000);
 
 	ImGui::Separator();
 	ImGui::Text("Emitter");
