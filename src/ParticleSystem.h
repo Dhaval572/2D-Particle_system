@@ -61,7 +61,7 @@ private:
 
 	Vector2 GetEmissionPoint();
 	void EmitParticle();
-	void DrawEmitterShape();
+	void DrawEmitterShape() const;
 	void Clear();
 	int GetParticleCount() const;
 	friend void DrawParticleSystemUI(ParticleSystem& ps);
