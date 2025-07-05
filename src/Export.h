@@ -34,5 +34,5 @@ private:
 
 public:
     void SavePreset(ParticleSystem& system);  
-    void LoadPreset(ParticleSystem& system);   
+    void LoadPreset(ParticleSystem& system) const;   
 };

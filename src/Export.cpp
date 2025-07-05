@@ -27,12 +27,12 @@ void ParticleSaver::SavePreset(ParticleSystem& system)  // Correct implementatio
     };
 }
 
-void ParticleSaver::LoadPreset(ParticleSystem& system) 
+void ParticleSaver::LoadPreset(ParticleSystem& system) const
 {
-    if (!SavedPreset.has_value()) return;
+    if (!SavedPreset.has_value()) 
+        return;
     
-    auto& preset = SavedPreset.value();
-    
+    const auto& preset = SavedPreset.value();
     system.max_particles = preset.max_particles;
     system.position = preset.position;
     system.e_EmitterType = preset.e_EmitterType;
