@@ -22,7 +22,9 @@ ParticleSystem::ParticleSystem()
 	  line_length(100.0f),
 	  circle_radius(50.0f),
 	  rect_size({100, 100}),
-	  b_Active(true)
+	  b_Active(true),
+	  particle_texture(LoadTexture("assets/Images/image.png"))
+	  
 {
 	particles.reserve(max_particles);
 }
@@ -38,7 +40,6 @@ Vector2 ParticleSystem::GetEmissionPoint()
 	{
 		float t = dist(rng);
 		return
-
 		{
 			position.x + (t - 0.5f) * line_length,
 			position.y
@@ -89,7 +90,7 @@ void ParticleSystem::EmitParticle()
 	p.rotation = 0;
 	p.rotation_speed = rotation_speed + (dist(rng) - 0.5f) * 2.0f;
 	p.b_Active = true;
-
+	p.image_texture = particle_texture;
 	particles.push_back(p);
 }
 
@@ -271,8 +272,23 @@ void ParticleSystem::Draw()
 
 				DrawLineEx(a, b, 2, p.color);
 			}
+			break;
 		}
-		
+
+		case IMAGE:
+		{
+			Rectangle source = {0.0f, 0.0f, (float)p.image_texture.width, (float)p.image_texture.height};
+			Rectangle dest =
+				{
+					p.position.x,
+					p.position.y,
+					p.size,
+					p.size};
+			Vector2 origin = {p.size / 2.0f, p.size / 2.0f};
+			DrawTexturePro(p.image_texture, source, dest, origin, p.rotation * RAD2DEG, p.color);
+			break;
+		}
+	
 		}
 	}
 
@@ -325,7 +341,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	static const char* s_PARTICLE_TYPES[] = 
 	{ 
-		"Circular", "Square", "Triangle", "K-Symbol" 
+		"Circular", "Square", "Triangle", "K-Symbol", "Image"
 	};
 	ImGui::Combo
 	(
@@ -415,4 +431,9 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	ImGui::Text("Active Particles: %d", ps.GetParticleCount());
 	ImGui::End();
+}
+
+ParticleSystem::~ParticleSystem()
+{
+	UnloadTexture(particle_texture);
 }

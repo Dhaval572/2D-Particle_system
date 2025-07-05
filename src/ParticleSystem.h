@@ -12,6 +12,7 @@ struct t_Particle
 	Vector2 position;
 	Vector2 velocity;
 	Vector2 acceleration;
+	Texture2D image_texture;
 	Color color;
 	float life;
 	float max_life;
@@ -26,7 +27,8 @@ enum ParticleType
 	CIRCULER,
 	SQUARE,
 	TRIANGLE,
-	K_CHAR
+	K_CHAR,
+	IMAGE
 };
 
 enum EmitterType
@@ -48,6 +50,7 @@ private:
 	// Emitter properties
 	EmitterType e_EmitterType;
 	ParticleType e_ParticleType;
+	Texture2D particle_texture;
 	float emission_rate;
 	float emission_timer;
 
@@ -82,6 +85,7 @@ public:
 	Vector2 position;
 
 	ParticleSystem();
+	~ParticleSystem();
 	void Update(float dt);
 	void Draw();
 };
