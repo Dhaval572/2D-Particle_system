@@ -7,7 +7,6 @@
 #include <random>
 #include <raymath.h>
 #include "Utility.h"
-#include "Export.h"
 
 class ParticleSaver;
 struct t_Particle
@@ -36,6 +35,7 @@ private:
 	EmitterType e_EmitterType;
 	ParticleType e_ParticleType;
 	Texture2D particle_texture;
+	bool use_texture;
 	float emission_rate;
 	float emission_timer;
 
@@ -64,12 +64,22 @@ private:
 	void DrawEmitterShape();
 	void Clear();
 	int GetParticleCount() const;
-	friend void DrawParticleSystemUI(ParticleSystem &ps);
+	friend void DrawParticleSystemUI(ParticleSystem& ps);
 
 public:
 	Vector2 position;
 
 	ParticleSystem();
+	~ParticleSystem();
 	void Update(float dt);
 	void Draw();
+
+	// Texture management
+	bool LoadTexture(const char* filename);
+	void UnloadTexture();
+	void SetUseTexture(bool use);
+	bool IsUsingTexture() const;
+
+	// Texture access for UI preview
+	const Texture2D& GetTexture() const { return particle_texture; }
 };
