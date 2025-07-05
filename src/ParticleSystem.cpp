@@ -36,7 +36,7 @@ ParticleSystem::~ParticleSystem()
 
 bool ParticleSystem::LoadTexture(const char* filename)
 {
-	// Unload existing texture first
+	// Unload Previous texture 
 	UnloadTexture();
 
 	particle_texture = LoadTextureFromImage(LoadImage(filename));
@@ -55,7 +55,7 @@ void ParticleSystem::UnloadTexture()
 {
 	if (particle_texture.id > 0)
 	{
-		::UnloadTexture(particle_texture);
+		::UnloadTexture(particle_texture); // (Note:-   :: is used to use raylib function)
 		particle_texture = {};
 	}
 	use_texture = false;
@@ -375,7 +375,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::Text("Texture Settings");
 
 	// Static buffer for texture path input
-	static char texture_path[512] = "";
+	static char texture_path[256] = "";
 	static bool load_failed = false;
 	static char error_message[256] = "";
 
