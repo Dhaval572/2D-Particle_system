@@ -34,7 +34,6 @@ void ParticleSaver::LoadPreset(ParticleSystem& system) const
     
     const auto& preset = SavedPreset.value();
     system.max_particles = preset.max_particles;
-    // system.position = preset.position;
     system.e_EmitterType = preset.e_EmitterType;
     system.e_ParticleType = preset.e_ParticleType;
     system.emission_rate = preset.emission_rate;
