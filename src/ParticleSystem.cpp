@@ -172,7 +172,6 @@ void ParticleSystem::DrawEmitterShape()
 
 void ParticleSystem::Draw()
 {
-
 	Rectangle draw_area =
 	{
 		GetScreenWidth() * 0.05f,
@@ -407,10 +406,15 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ps.end_color = ImVec4ToColor(end_col);
 	}
 
-	ImGui::Separator();
-	if (ImGui::Button("Clear Particles"))
+	static ParticleSaver saver;
+	if (ImGui::Button("Save Preset"))
 	{
-		ps.Clear();
+		saver.SavePreset(ps);
+	}
+	
+	if (ImGui::Button("Load Preset"))
+	{
+		saver.LoadPreset(ps);
 	}
 
 	ImGui::Text("Active Particles: %d", ps.GetParticleCount());

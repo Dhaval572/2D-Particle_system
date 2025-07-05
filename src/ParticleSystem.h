@@ -1,4 +1,5 @@
 #pragma once
+#include "ParticleEnums.h"
 #include <raylib.h>
 #include <rlImGui.h>
 #include <imgui.h>
@@ -6,7 +7,9 @@
 #include <random>
 #include <raymath.h>
 #include "Utility.h"
+#include "Export.h"
 
+class ParticleSaver;
 struct t_Particle
 {
 	Vector2 position;
@@ -21,26 +24,10 @@ struct t_Particle
 	bool b_Active;
 };
 
-enum ParticleType
-{
-	CIRCULER,
-	SQUARE,
-	TRIANGLE,
-	K_CHAR
-};
-
-enum EmitterType
-{
-	POINT,
-	LINE,
-	CIRCLE,
-	RECTANGLE
-};
-
-// Particle system class
 class ParticleSystem
 {
 private:
+	friend class ParticleSaver;
 	std::vector<t_Particle> particles;
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> dist;
