@@ -1,7 +1,6 @@
-// Export.cpp
 #include "Export.h"
 
-void ParticleSaver::SavePreset(ParticleSystem& system)  // Correct implementation
+void ParticleSaver::SavePreset(ParticleSystem& system) 
 {
     SavedPreset = ParticlePreset
 	{
@@ -29,7 +28,7 @@ void ParticleSaver::SavePreset(ParticleSystem& system)  // Correct implementatio
 
 void ParticleSaver::LoadPreset(ParticleSystem& system) const
 {
-    if (!SavedPreset.has_value()) 
+    if (!SavedPreset.has_value())
         return;
     
     const auto& preset = SavedPreset.value();

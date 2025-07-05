@@ -366,8 +366,8 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	// Settings
 	ImGui::Checkbox("Active", &ps.b_Active);
-	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 100.0f);
-	ImGui::SliderInt("Max Particles", &ps.max_particles, 100, 5000);
+	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 400.0f);
+	ImGui::SliderInt("Max Particles", &ps.max_particles, 200, 10000);
 
 	ImGui::Separator();
 
@@ -538,10 +538,18 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ps.end_color = ImVec4ToColor(end_col);
 	}
 
+	ImGui::SameLine(0.0f, 60.0f);
+	if(ImGui::Button("Clear Particle"))
+	{
+		ps.Clear();
+	}
+
+	ImGui::SameLine(0.0f, 60.0f);
 	if (ImGui::Button("Save Preset"))
 	{
 	}
 
+	ImGui::SameLine(0.0f, 60.0f);
 	if (ImGui::Button("Load Preset"))
 	{
 	}

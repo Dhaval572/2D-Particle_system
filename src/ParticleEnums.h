@@ -1,4 +1,3 @@
-// ParticleEnums.h
 #pragma once
 
 enum EmitterType 
