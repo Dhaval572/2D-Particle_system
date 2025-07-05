@@ -538,9 +538,18 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ps.end_color = ImVec4ToColor(end_col);
 	}
 
+	ImGui::SameLine(0.0f, 60.0f);
+	if(ImGui::Button("Clear Particle"))
+	{
+		ps.Clear();
+	}
+
+	ImGui::SameLine(0.0f, 60.0f);
 	if (ImGui::Button("Save Preset"))
 	{
 	}
+
+	ImGui::SameLine(0.0f, 60.0f);
 	if (ImGui::Button("Load Preset"))
 	{
 	}
