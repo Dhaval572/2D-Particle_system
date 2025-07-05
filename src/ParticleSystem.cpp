@@ -177,7 +177,7 @@ void ParticleSystem::Update(float dt)
 	}
 }
 
-void ParticleSystem::DrawEmitterShape()
+void ParticleSystem::DrawEmitterShape() const
 {
 	Color shape_color = { 128, 128, 128, 100 }; // Gray with transparency
 
