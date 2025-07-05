@@ -277,13 +277,19 @@ void ParticleSystem::Draw()
 
 		case IMAGE:
 		{
-			Rectangle source = {0.0f, 0.0f, (float)p.image_texture.width, (float)p.image_texture.height};
+			Rectangle source = 
+			{
+				0.0f, 0.0f, 
+				static_cast<float>(p.image_texture.width), 
+				static_cast<float>(p.image_texture.height)
+			};
 			Rectangle dest =
 				{
 					p.position.x,
 					p.position.y,
 					p.size,
-					p.size};
+					p.size
+				};
 			Vector2 origin = {p.size / 2.0f, p.size / 2.0f};
 			DrawTexturePro(p.image_texture, source, dest, origin, p.rotation * RAD2DEG, p.color);
 			break;
