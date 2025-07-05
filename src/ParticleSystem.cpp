@@ -90,7 +90,7 @@ void ParticleSystem::EmitParticle()
 	p.rotation = 0;
 	p.rotation_speed = rotation_speed + (dist(rng) - 0.5f) * 2.0f;
 	p.b_Active = true;
-	p.image_texture = particle_texture;
+	p.image_texture = &particle_texture;
 	particles.push_back(p);
 }
 
@@ -163,7 +163,8 @@ void ParticleSystem::DrawEmitterShape()
 		DrawRectangleLinesEx
 		(
 			{ 
-				position.x - rect_size.x / 2, position.y - rect_size.y / 2, 
+				position.x - rect_size.x / 2,
+				position.y - rect_size.y / 2, 
 				rect_size.x, rect_size.y 
 			}, 
 			2, shape_color
@@ -277,21 +278,22 @@ void ParticleSystem::Draw()
 
 		case IMAGE:
 		{
-			Rectangle source = 
+			if (p.image_texture && p.image_texture->id != 0)
 			{
-				0.0f, 0.0f, 
-				static_cast<float>(p.image_texture.width), 
-				static_cast<float>(p.image_texture.height)
-			};
-			Rectangle dest =
+				Rectangle source = 
 				{
-					p.position.x,
-					p.position.y,
-					p.size,
-					p.size
+					0.0f, 0.0f,
+					static_cast<float>(p.image_texture->width),
+					static_cast<float>(p.image_texture->height)
 				};
-			Vector2 origin = {p.size / 2.0f, p.size / 2.0f};
-			DrawTexturePro(p.image_texture, source, dest, origin, p.rotation * RAD2DEG, p.color);
+				Rectangle dest = {p.position.x, p.position.y, p.size, p.size};
+				Vector2 origin = {p.size / 2.0f, p.size / 2.0f};
+
+				DrawTexturePro
+				(
+					*p.image_texture, source, dest, origin, p.rotation * RAD2DEG, p.color
+				);
+			}
 			break;
 		}
 	
@@ -328,7 +330,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	// Settings
 	ImGui::Checkbox("Active", &ps.b_Active);
-	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 200.0f);
+	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 100.0f);
 	ImGui::SliderInt("Max Particles", &ps.max_particles, 100, 5000);
 
 	ImGui::Separator();

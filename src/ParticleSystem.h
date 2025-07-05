@@ -12,7 +12,7 @@ struct t_Particle
 	Vector2 position;
 	Vector2 velocity;
 	Vector2 acceleration;
-	Texture2D image_texture;
+	Texture2D *image_texture;
 	Color color;
 	float life;
 	float max_life;
