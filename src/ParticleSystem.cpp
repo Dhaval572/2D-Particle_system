@@ -2,29 +2,27 @@
 
 ParticleSystem::ParticleSystem()
 	: max_particles(1000),
-	  rng(std::random_device{}()),
-	  dist(0.0f, 1.0f),
-	  position({}),
-	  e_EmitterType(POINT),
-	  e_ParticleType(CIRCULER),
-	  emission_rate(50.0f),
-	  emission_timer(0.0f),
-	  velocity({0, -50}),
-	  velocity_variation({20, 20}),
-	  acceleration({0, 98}),
-	  start_color(DARKGREEN),
-	  end_color(GREEN),
-	  min_life(1.0f),
-	  max_life(3.0f),
-	  min_size(2.0f),
-	  max_size(8.0f),
-	  rotation_speed(0.0f),
-	  line_length(100.0f),
-	  circle_radius(50.0f),
-	  rect_size({100, 100}),
-	  b_Active(true),
-	  particle_texture(LoadTexture("assets/Images/image.png"))
-	  
+	rng(std::random_device{}()),
+	dist(0.0f, 1.0f),
+	position({}),
+	e_EmitterType(POINT),
+	e_ParticleType(CIRCULER),
+	emission_rate(50.0f),
+	emission_timer(0.0f),
+	velocity({ 0, -50 }),
+	velocity_variation({ 20, 20 }),
+	acceleration({ 0, 98 }),
+	start_color(DARKGREEN),
+	end_color(GREEN),
+	min_life(1.0f),
+	max_life(3.0f),
+	min_size(2.0f),
+	max_size(8.0f),
+	rotation_speed(0.0f),
+	line_length(100.0f),
+	circle_radius(50.0f),
+	rect_size({ 100, 100 }),
+	b_Active(true)
 {
 	particles.reserve(max_particles);
 }
@@ -90,7 +88,6 @@ void ParticleSystem::EmitParticle()
 	p.rotation = 0;
 	p.rotation_speed = rotation_speed + (dist(rng) - 0.5f) * 2.0f;
 	p.b_Active = true;
-	p.image_texture = &particle_texture;
 	particles.push_back(p);
 }
 
@@ -162,11 +159,11 @@ void ParticleSystem::DrawEmitterShape()
 	case RECTANGLE:
 		DrawRectangleLinesEx
 		(
-			{ 
+			{
 				position.x - rect_size.x / 2,
-				position.y - rect_size.y / 2, 
-				rect_size.x, rect_size.y 
-			}, 
+				position.y - rect_size.y / 2,
+				rect_size.x, rect_size.y
+			},
 			2, shape_color
 		);
 		break;
@@ -229,7 +226,7 @@ void ParticleSystem::Draw()
 				p.size,
 				p.rotation * RAD2DEG,
 				p.color
-			);	
+			);
 			break;
 		}
 
@@ -276,27 +273,6 @@ void ParticleSystem::Draw()
 			break;
 		}
 
-		case IMAGE:
-		{
-			if (p.image_texture && p.image_texture->id != 0)
-			{
-				Rectangle source = 
-				{
-					0.0f, 0.0f,
-					static_cast<float>(p.image_texture->width),
-					static_cast<float>(p.image_texture->height)
-				};
-				Rectangle dest = {p.position.x, p.position.y, p.size, p.size};
-				Vector2 origin = {p.size / 2.0f, p.size / 2.0f};
-
-				DrawTexturePro
-				(
-					*p.image_texture, source, dest, origin, p.rotation * RAD2DEG, p.color
-				);
-			}
-			break;
-		}
-	
 		}
 	}
 
@@ -322,8 +298,8 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::SetNextWindowSize(ImVec2(s_width * 0.35f, s_height * 0.9f));
 	ImGui::Begin
 	(
-		"Particle System Editor", 
-		nullptr, 
+		"Particle System Editor",
+		nullptr,
 		ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoMove
 	);
@@ -335,9 +311,9 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	ImGui::Separator();
 	ImGui::Text("Emitter");
-	static const char* s_EMITTER_TYPES[] = 
-	{ 
-		"Point", "Line", "Circle", "Rectangle" 
+	static const char* s_EMITTER_TYPES[] =
+	{
+		"Point", "Line", "Circle", "Rectangle"
 	};
 	ImGui::Combo
 	(
@@ -347,9 +323,9 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		IM_ARRAYSIZE(s_EMITTER_TYPES)
 	);
 
-	static const char* s_PARTICLE_TYPES[] = 
-	{ 
-		"Circular", "Square", "Triangle", "K-Symbol", "Image"
+	static const char* s_PARTICLE_TYPES[] =
+	{
+		"Circular", "Square", "Triangle", "K-Symbol"
 	};
 	ImGui::Combo
 	(
@@ -369,16 +345,16 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	ImGui::SliderFloat
 	(
-		"Emitter X", 
-		&ps.position.x, 
-		draw_area.x, 
+		"Emitter X",
+		&ps.position.x,
+		draw_area.x,
 		draw_area.x + draw_area.width
 	);
 	ImGui::SliderFloat
 	(
-		"Emitter Y", 
-		&ps.position.y, 
-		draw_area.y, 
+		"Emitter Y",
+		&ps.position.y,
+		draw_area.y,
 		draw_area.y + draw_area.height
 	);
 
@@ -439,9 +415,4 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	ImGui::Text("Active Particles: %d", ps.GetParticleCount());
 	ImGui::End();
-}
-
-ParticleSystem::~ParticleSystem()
-{
-	UnloadTexture(particle_texture);
 }
