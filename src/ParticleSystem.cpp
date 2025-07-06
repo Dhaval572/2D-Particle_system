@@ -92,41 +92,41 @@ Vector2 ParticleSystem::GetEmissionPoint()
 {
 	switch (e_EmitterType)
 	{
-	case POINT:
-		return position;
-
-	case LINE:
-	{
-		float t = dist(rng);
-		return
+		case POINT:
+			return position;
+			
+		case LINE:
 		{
-			position.x + (t - 0.5f) * line_length,
-			position.y
-		};
-	}
-
-	case CIRCLE:
-	{
-		float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
-		float radius = dist(rng) * circle_radius;	  // [0, circle_radius]
-		return
+			float t = dist(rng);
+			return
+			{
+				position.x + (t - 0.5f) * line_length,
+				position.y
+			};
+		}
+	
+		case CIRCLE:
 		{
-			position.x + cosf(angle) * radius,
-			position.y + sinf(angle) * radius
-		};
-	}
-
-	case RECTANGLE:
-	{
-		return
+			float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
+			float radius = dist(rng) * circle_radius;	  // [0, circle_radius]
+			return
+			{
+				position.x + cosf(angle) * radius,
+				position.y + sinf(angle) * radius
+			};
+		}
+	
+		case RECTANGLE:
 		{
-			position.x + (dist(rng) - 0.5f) * rect_size.x,
-			position.y + (dist(rng) - 0.5f) * rect_size.y
-		};
-	}
-
-	default:
-		return position;
+			return
+			{
+				position.x + (dist(rng) - 0.5f) * rect_size.x,
+				position.y + (dist(rng) - 0.5f) * rect_size.y
+			};
+		}
+	
+		default:
+			return position;
 	}
 }
 
