@@ -166,31 +166,31 @@ void ParticleSystem::Update(float dt)
 	}
 
 	// Update existing particles
-	for (auto it = particles.begin(); it != particles.end(); ++it)
+	for (size_t i = 0; i < particles.size();)
 	{
-		t_Particle& p = *it;
-
+		t_Particle &p = particles[i];
 		if (!p.b_Active || p.life <= 0)
 		{
-			it = particles.erase(it);
-			continue;
+			particles[i] = particles.back(); 
+			particles.pop_back();
 		}
+		else
+		{
+			// Update logic
+			p.velocity.x += p.acceleration.x * dt;
+			p.velocity.y += p.acceleration.y * dt;
+			p.position.x += p.velocity.x * dt;
+			p.position.y += p.velocity.y * dt;
+			p.rotation += p.rotation_speed * dt;
+			p.life -= dt;
 
-		// Update physics
-		p.velocity.x += p.acceleration.x * dt;
-		p.velocity.y += p.acceleration.y * dt;
-		p.position.x += p.velocity.x * dt;
-		p.position.y += p.velocity.y * dt;
-
-		p.rotation += p.rotation_speed * dt;
-		p.life -= dt;
-
-		// Interpolate color and apply alpha based on life
-		float t = 1.0f - (p.life / p.max_life);
-		p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
-		p.color.g = Clamp(start_color.g * (1.0f - t) + end_color.g * t, 0, 255);
-		p.color.b = Clamp(start_color.b * (1.0f - t) + end_color.b * t, 0, 255);
-		p.color.a = Clamp(255.0f * (p.life / p.max_life), 0, 255);
+			float t = 1.0f - (p.life / p.max_life);
+			p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
+			p.color.g = Clamp(start_color.g * (1.0f - t) + end_color.g * t, 0, 255);
+			p.color.b = Clamp(start_color.b * (1.0f - t) + end_color.b * t, 0, 255);
+			p.color.a = Clamp(255.0f * (p.life / p.max_life), 0, 255);
+			++i;
+		}
 	}
 }
 
@@ -401,14 +401,15 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	static bool load_failed = false;
 	static char error_message[256] = "";
 
-	ImGui::Text("Path: %s", texture_path);
+	ImGui::TextWrapped("Path: %s", texture_path);
 	if (ImGui::Button("Load"))
 	{
-		const char* path = tinyfd_openFileDialog
+		static const char *filters[4] = {".png", ".jpg", ".jpeg", ".bmp"};
+		const char *path = tinyfd_openFileDialog
 		(
 			"Select Texture File", 
 			"", 
-			0, 
+			4, 
 			nullptr, 
 			nullptr, 
 			0
