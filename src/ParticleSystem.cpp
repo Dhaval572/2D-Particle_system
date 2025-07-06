@@ -242,7 +242,13 @@ void ParticleSystem::Draw()
 	};
 
 	DrawRectangleLinesEx(draw_area, 2, GRAY);
-	BeginScissorMode(draw_area.x, draw_area.y, draw_area.width, draw_area.height);
+	BeginScissorMode
+	(
+		draw_area.x, 
+		draw_area.y, 
+		draw_area.width, 
+		draw_area.height
+	);
 
 	const bool use_tex = IsUsingTexture() && texture_data_cached;
 
