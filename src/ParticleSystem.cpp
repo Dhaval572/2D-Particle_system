@@ -235,16 +235,22 @@ void ParticleSystem::Draw()
 		// If using texture, draw texture instead of geometric shapes
 		if (IsUsingTexture())
 		{
-			Rectangle source = { 0, 0, (float)particle_texture.width, (float)particle_texture.height };
-			Rectangle dest = {
+			Rectangle source = 
+			{ 
+				0, 0, 
+				static_cast<float>(particle_texture.width), 
+				static_cast<float>(particle_texture.height) 
+			};
+			Rectangle dest = 
+			{
 				p.position.x - p.size / 2,
 				p.position.y - p.size / 2,
-				p.size,
-				p.size
+				p.size + particle_texture.width,
+				p.size + particle_texture.height
 			};
 			Vector2 origin = { p.size / 2, p.size / 2 };
 
-			DrawTexturePro(particle_texture, source, dest, origin, p.rotation * RAD2DEG, p.color);
+			DrawTexturePro(particle_texture, source, dest, origin, p.rotation * RAD2DEG, WHITE);
 		}
 		else
 		{
@@ -332,6 +338,7 @@ void ParticleSystem::Draw()
 				}
 				break;
 			}
+
 			}
 		}
 	}
@@ -379,30 +386,42 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	static bool load_failed = false;
 	static char error_message[256] = "";
 
-	// Texture path input field
-	ImGui::InputText("Texture Path", texture_path, sizeof(texture_path));
-
-	// Load and Clear buttons
-	if (ImGui::Button("Load Texture"))
+	ImGui::Text("Load texture: %s", texture_path);
+	if (ImGui::Button("Load"))
 	{
-		if (strlen(texture_path) > 0)
+		const char* path = tinyfd_openFileDialog
+		(
+			"Select Texture File", 
+			"", 
+			0, 
+			nullptr, 
+			nullptr, 
+			0
+		);
+		if (path)
 		{
-			if (ps.LoadTexture(texture_path))
-			{
-				load_failed = false;
-				strcpy(error_message, "");
-			}
-			else
-			{
-				load_failed = true;
-				snprintf(error_message, sizeof(error_message), "Failed to load: %s", texture_path);
-			}
+			strncpy(texture_path, path, sizeof(texture_path) - 1);
+			texture_path[sizeof(texture_path) - 1] = '\0'; 
+		}
+	}
+
+	if (strlen(texture_path) > 0)
+	{
+		if (ps.LoadTexture(texture_path))
+		{
+			load_failed = false;
+			strcpy(error_message, "");
 		}
 		else
 		{
 			load_failed = true;
-			strcpy(error_message, "Please enter a texture path");
+			snprintf(error_message, sizeof(error_message), "Failed to load: %s", texture_path);
 		}
+	}
+	else
+	{
+		load_failed = true;
+		strcpy(error_message, "Please load image");
 	}
 
 	ImGui::SameLine();
@@ -411,13 +430,20 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ps.UnloadTexture();
 		load_failed = false;
 		strcpy(error_message, "");
+		texture_path[0] = '\0';
 	}
 
-	// Use texture checkbox
-	bool use_texture = ps.IsUsingTexture();
-	if (ImGui::Checkbox("Use Texture", &use_texture))
+	if (ps.particle_texture.id > 0)
 	{
-		ps.SetUseTexture(use_texture);
+		bool use_texture = ps.IsUsingTexture();
+		if (ImGui::Checkbox("Use Texture", &use_texture))
+		{
+			ps.SetUseTexture(use_texture);
+		}
+	}
+	else
+	{
+		ps.SetUseTexture(false); 
 	}
 
 	// Status display

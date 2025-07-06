@@ -7,6 +7,7 @@
 #include <random>
 #include <raymath.h>
 #include "Utility.h"
+#include "tinyfiledialogs.h"
 
 class ParticleSaver;
 struct t_Particle
