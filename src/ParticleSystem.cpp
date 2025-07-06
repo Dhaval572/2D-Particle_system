@@ -371,7 +371,7 @@ void ParticleSystem::Clear()
 	particles.clear();
 }
 
-int ParticleSystem::GetParticleCount() const
+int ParticleSystem::GetParticleCount() const 
 {
 	return particles.size();
 }
@@ -427,7 +427,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		if (ps.LoadTexture(texture_path))
 		{
 			load_failed = false;
-			strcpy(error_message, "");
+			strcpy(error_message, ""); 
 		}
 		else
 		{
