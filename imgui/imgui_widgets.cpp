@@ -3910,6 +3910,11 @@ bool ImGui::InputDouble(const char* label, double* v, double step, double step_f
 // - DebugNodeInputTextState() [Internal]
 //-------------------------------------------------------------------------
 
+// Macro to check if there is a selection in the text edit state
+#ifndef STB_TEXT_HAS_SELECTION
+#define STB_TEXT_HAS_SELECTION(stb) ((stb)->select_start != (stb)->select_end)
+#endif
+
 namespace ImStb
 {
 #include "imstb_textedit.h"
