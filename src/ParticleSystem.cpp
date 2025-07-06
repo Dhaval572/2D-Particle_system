@@ -254,7 +254,7 @@ void ParticleSystem::Draw()
 		}
 		else
 		{
-			// Draw geometric shapes as before
+			// Draw geometric shapes 
 			switch (e_ParticleType)
 			{
 			case CIRCULER:
@@ -377,8 +377,6 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::SliderInt("Max Particles", &ps.max_particles, 200, 10000);
 
 	ImGui::Separator();
-
-	// Texture settings
 	ImGui::Text("Texture Settings");
 
 	// Static buffer for texture path input
@@ -386,7 +384,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	static bool load_failed = false;
 	static char error_message[256] = "";
 
-	ImGui::Text("Load texture: %s", texture_path);
+	ImGui::Text("Path: %s", texture_path);
 	if (ImGui::Button("Load"))
 	{
 		const char* path = tinyfd_openFileDialog
@@ -424,8 +422,8 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		strcpy(error_message, "Please load image");
 	}
 
-	ImGui::SameLine();
-	if (ImGui::Button("Clear Texture"))
+	ImGui::SameLine(0.0f, 260.0f);
+	if (ImGui::Button("Unload Texture"))
 	{
 		ps.UnloadTexture();
 		load_failed = false;
