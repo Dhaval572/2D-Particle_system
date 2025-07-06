@@ -45,26 +45,28 @@ bool ParticleSystem::LoadTexture(const char* filename)
 	{
 		use_texture = true;
 
-		texture_source_rect = 
-		{ 
-            0, 0, 
-            static_cast<float>(particle_texture.width), 
-            static_cast<float>(particle_texture.height) 
-        };
+		texture_source_rect =
+		{
+			0, 0,
+			static_cast<float>(particle_texture.width),
+			static_cast<float>(particle_texture.height)
+		};
 
-		texture_half_size = 
-		{ 
-            static_cast<float>(particle_texture.width) * 0.5f,
-            static_cast<float>(particle_texture.height) * 0.5f 
-        };
+		texture_half_size =
+		{
+			static_cast<float>(particle_texture.width) * 0.5f,
+			static_cast<float>(particle_texture.height) * 0.5f
+		};
 		texture_data_cached = true;
+
+		GenTextureMipmaps(&particle_texture);
 
 		return true;
 	}
 
 	use_texture = false;
-    texture_data_cached = false;
-    return false;
+	texture_data_cached = false;
+	return false;
 }
 
 void ParticleSystem::UnloadTexture()
@@ -75,7 +77,7 @@ void ParticleSystem::UnloadTexture()
 		particle_texture = {};
 	}
 	use_texture = false;
-	texture_data_cached = false; 
+	texture_data_cached = false;
 }
 
 void ParticleSystem::SetUseTexture(bool use)
@@ -168,7 +170,7 @@ void ParticleSystem::Update(float dt)
 	// Update existing particles
 	for (size_t i = 0; i < particles.size();)
 	{
-		t_Particle &p = particles[i];
+		t_Particle& p = particles[i];
 		if (!p.b_Active || p.life <= 0)
 		{
 			particles[i] = particles.back();
@@ -184,10 +186,14 @@ void ParticleSystem::Update(float dt)
 			p.rotation += p.rotation_speed * dt;
 			p.life -= dt;
 
-			float t = 1.0f - (p.life / p.max_life);
-			p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
-			p.color.g = Clamp(start_color.g * (1.0f - t) + end_color.g * t, 0, 255);
-			p.color.b = Clamp(start_color.b * (1.0f - t) + end_color.b * t, 0, 255);
+			if (start_color.r != end_color.r || start_color.g != end_color.g ||
+				start_color.b != end_color.b)
+			{
+				float t = 1.0f - (p.life / p.max_life);
+				p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
+				p.color.g = Clamp(start_color.g * (1.0f - t) + end_color.g * t, 0, 255);
+				p.color.b = Clamp(start_color.b * (1.0f - t) + end_color.b * t, 0, 255);
+			}
 			p.color.a = Clamp(255.0f * (p.life / p.max_life), 0, 255);
 			++i;
 		}
@@ -260,22 +266,22 @@ void ParticleSystem::Draw()
 		// If using texture, draw texture instead of geometric shapes
 		if (use_tex)
 		{
-			Rectangle dest = 
+			Rectangle dest =
 			{
-                p.position.x - texture_half_size.x,
-                p.position.y - texture_half_size.y,
-                static_cast<float>(particle_texture.width),
-                static_cast<float>(particle_texture.height)
-            };
+				p.position.x - texture_half_size.x,
+				p.position.y - texture_half_size.y,
+				texture_source_rect.width,
+				texture_source_rect.height
+			};
 			DrawTexturePro
 			(
-                particle_texture, 
-                texture_source_rect,    
-                dest, 
-                texture_half_size,      
-                p.rotation * RAD2DEG, 
-                WHITE
-            );
+				particle_texture,
+				texture_source_rect,
+				dest,
+				texture_half_size,
+				p.rotation * RAD2DEG,
+				WHITE
+			);
 		}
 		else
 		{
@@ -377,7 +383,7 @@ void ParticleSystem::Clear()
 	particles.clear();
 }
 
-int ParticleSystem::GetParticleCount() const 
+int ParticleSystem::GetParticleCount() const
 {
 	return particles.size();
 }
@@ -399,7 +405,11 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	// Settings
 	ImGui::Checkbox("Active", &ps.b_Active);
 	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 400.0f);
-	ImGui::SliderInt("Max Particles", &ps.max_particles, 200, 10000);
+
+	if (ImGui::SliderInt("Max Particles", &ps.max_particles, 200, 10000))
+	{
+		ps.particles.reserve(ps.max_particles);
+	}
 
 	ImGui::Separator();
 	ImGui::Text("Texture Settings");
@@ -412,14 +422,14 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::TextWrapped("Path: %s", texture_path);
 	if (ImGui::Button("Load"))
 	{
-		static const char *filters[4] = {".png", ".jpg", ".jpeg", ".bmp"};
-		const char *path = tinyfd_openFileDialog
+		static const char* filters[4] = { ".png", ".jpg", ".jpeg", ".bmp" };
+		const char* path = tinyfd_openFileDialog
 		(
-			"Select Texture File", 
-			"", 
-			4, 
-			nullptr, 
-			nullptr, 
+			"Select Texture File",
+			"",
+			4,
+			nullptr,
+			nullptr,
 			0
 		);
 		if (path)
@@ -433,7 +443,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		if (ps.LoadTexture(texture_path))
 		{
 			load_failed = false;
-			strcpy(error_message, ""); 
+			strcpy(error_message, "");
 		}
 		else
 		{
@@ -587,7 +597,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ps.end_color = ImVec4ToColor(end_col);
 	}
 
-	if(ImGui::Button("Clear Particle"))
+	if (ImGui::Button("Clear Particle"))
 	{
 		ps.Clear();
 	}
