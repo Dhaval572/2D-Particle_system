@@ -244,13 +244,15 @@ void ParticleSystem::Draw()
 	DrawRectangleLinesEx(draw_area, 2, GRAY);
 	BeginScissorMode(draw_area.x, draw_area.y, draw_area.width, draw_area.height);
 
+	const bool use_tex = IsUsingTexture() && texture_data_cached;
+
 	for (const auto& p : particles)
 	{
 		if (!p.b_Active)
 			continue;
 
 		// If using texture, draw texture instead of geometric shapes
-		if (IsUsingTexture() && texture_data_cached)
+		if (use_tex)
 		{
 			Rectangle dest = 
 			{
