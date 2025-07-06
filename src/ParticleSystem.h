@@ -56,9 +56,13 @@ private:
 	float line_length;
 	float circle_radius;
 	Vector2 rect_size;
-
 	bool b_Active;
 	int max_particles;
+
+	// For texture
+	Rectangle texture_source_rect;
+    Vector2 texture_half_size;
+    bool texture_data_cached;
 
 	Vector2 GetEmissionPoint();
 	void EmitParticle();

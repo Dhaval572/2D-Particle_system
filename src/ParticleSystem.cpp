@@ -44,11 +44,27 @@ bool ParticleSystem::LoadTexture(const char* filename)
 	if (particle_texture.id > 0)
 	{
 		use_texture = true;
+
+		texture_source_rect = 
+		{ 
+            0, 0, 
+            static_cast<float>(particle_texture.width), 
+            static_cast<float>(particle_texture.height) 
+        };
+
+		texture_half_size = 
+		{ 
+            static_cast<float>(particle_texture.width) * 0.5f,
+            static_cast<float>(particle_texture.height) * 0.5f 
+        };
+		texture_data_cached = true;
+
 		return true;
 	}
 
 	use_texture = false;
-	return false;
+    texture_data_cached = false;
+    return false;
 }
 
 void ParticleSystem::UnloadTexture()
@@ -59,6 +75,7 @@ void ParticleSystem::UnloadTexture()
 		particle_texture = {};
 	}
 	use_texture = false;
+	texture_data_cached = false; 
 }
 
 void ParticleSystem::SetUseTexture(bool use)
@@ -233,24 +250,24 @@ void ParticleSystem::Draw()
 			continue;
 
 		// If using texture, draw texture instead of geometric shapes
-		if (IsUsingTexture())
+		if (IsUsingTexture() && texture_data_cached)
 		{
-			Rectangle source = 
-			{ 
-				0, 0, 
-				static_cast<float>(particle_texture.width), 
-				static_cast<float>(particle_texture.height) 
-			};
 			Rectangle dest = 
 			{
-				p.position.x - p.size / 2,
-				p.position.y - p.size / 2,
-				p.size + particle_texture.width,
-				p.size + particle_texture.height
-			};
-			Vector2 origin = { p.size / 2, p.size / 2 };
-
-			DrawTexturePro(particle_texture, source, dest, origin, p.rotation * RAD2DEG, WHITE);
+                p.position.x - texture_half_size.x,
+                p.position.y - texture_half_size.y,
+                static_cast<float>(particle_texture.width),
+                static_cast<float>(particle_texture.height)
+            };
+			DrawTexturePro
+			(
+                particle_texture, 
+                texture_source_rect,    
+                dest, 
+                texture_half_size,      
+                p.rotation * RAD2DEG, 
+                WHITE
+            );
 		}
 		else
 		{
@@ -399,7 +416,6 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		if (path)
 		{
 			strncpy(texture_path, path, sizeof(texture_path) - 1);
-			texture_path[sizeof(texture_path) - 1] = '\0'; 
 		}
 	}
 
