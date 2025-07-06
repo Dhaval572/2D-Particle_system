@@ -171,7 +171,7 @@ void ParticleSystem::Update(float dt)
 		t_Particle &p = particles[i];
 		if (!p.b_Active || p.life <= 0)
 		{
-			particles[i] = particles.back(); 
+			particles[i] = particles.back();
 			particles.pop_back();
 		}
 		else
@@ -460,7 +460,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 	else
 	{
-		ps.SetUseTexture(false); 
+		ps.SetUseTexture(false);
 	}
 
 	// Status display
@@ -587,14 +587,10 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 
 	ImGui::SameLine(0.0f, 60.0f);
-	if (ImGui::Button("Save Preset"))
-	{
-	}
+	if (ImGui::Button("Save Preset")){}
 
 	ImGui::SameLine(0.0f, 60.0f);
-	if (ImGui::Button("Load Preset"))
-	{
-	}
+	if (ImGui::Button("Load Preset")){}
 
 	ImGui::Text("Active Particles: %d", ps.GetParticleCount());
 	ImGui::End();
