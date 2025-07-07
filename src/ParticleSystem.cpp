@@ -592,6 +592,21 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	{
 		ImGui::SliderFloat("Min Size", &ps.min_size, 1.0f, 20.0f);
 		ImGui::SliderFloat("Max Size", &ps.max_size, 1.0f, 50.0f);
+		ImGui::SliderFloat("Rotation Speed", &ps.rotation_speed, -10.0f, 10.0f);
+
+		ImGui::Separator();
+		ImGui::Text("Colors");
+		ImVec4 start_col = ColorToImVec4(ps.start_color);
+		if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float *>(&start_col)))
+		{
+			ps.start_color = ImVec4ToColor(start_col);
+		}
+
+		ImVec4 end_col = ColorToImVec4(ps.end_color);
+		if (ImGui::ColorEdit4("End Color", reinterpret_cast<float *>(&end_col)))
+		{
+			ps.end_color = ImVec4ToColor(end_col);
+		}
 	}
 	else
 	{
@@ -609,22 +624,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		}
 	}
 
-	ImGui::SliderFloat("Rotation Speed", &ps.rotation_speed, -10.0f, 10.0f);
-	ImGui::Separator();
-	ImGui::Text("Colors");
-
-	ImVec4 start_col = ColorToImVec4(ps.start_color);
-	if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float*>(&start_col)))
-	{
-		ps.start_color = ImVec4ToColor(start_col);
-	}
-
-	ImVec4 end_col = ColorToImVec4(ps.end_color);
-	if (ImGui::ColorEdit4("End Color", reinterpret_cast<float*>(&end_col)))
-	{
-		ps.end_color = ImVec4ToColor(end_col);
-	}
-
+	ImGui::NewLine();
 	if (ImGui::Button("Clear Particle"))
 	{
 		ps.Clear();
