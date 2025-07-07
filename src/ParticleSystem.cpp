@@ -42,13 +42,13 @@ bool ParticleSystem::LoadTexture(const char* filename)
 	UnloadTexture();
 
 	Image img = LoadImage(filename);
+
 	if (tex_width > 0 && tex_height > 0)
 	{
 		ImageResize(&img, tex_width, tex_height);
 	}
 
 	particle_texture = LoadTextureFromImage(img);
-
 	if (particle_texture.id > 0)
 	{
 		use_texture = true;
@@ -595,10 +595,12 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 	else
 	{
-		ps.width_changed = ImGui::SliderInt("Texture Width", &ps.tex_width, 1, 500);
-		ps.height_changed = ImGui::SliderInt("Texture Height", &ps.tex_height, 1, 500);
+		ps.width_changed = ImGui::InputInt("Width", &ps.tex_width);
+		ps.tex_width = Clamp(ps.tex_width, 1, 500);
 
-		// Automatically reload texture if dimensions changed and a texture is loaded
+		ps.height_changed = ImGui::InputInt("Height", &ps.tex_height);
+		ps.tex_height = Clamp(ps.tex_height, 1, 500);
+
 		if ((ps.width_changed || ps.height_changed))
 		{
 			ps.LoadTexture(texture_path);
