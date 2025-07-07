@@ -420,7 +420,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::Checkbox("Active", &ps.b_Active);
 	ImGui::SliderFloat("Emission Rate", &ps.emission_rate, 1.0f, 400.0f);
 
-	if (ImGui::SliderInt("Max Particles", &ps.max_particles, 200, 10000))
+	if (ImGui::SliderInt("Max Particles", &ps.max_particles, 200, 3000))
 	{
 		ps.particles.reserve(ps.max_particles);
 	}
@@ -610,7 +610,6 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 
 	ImGui::SliderFloat("Rotation Speed", &ps.rotation_speed, -10.0f, 10.0f);
-
 	ImGui::Separator();
 	ImGui::Text("Colors");
 
