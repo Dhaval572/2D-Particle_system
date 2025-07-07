@@ -50,7 +50,6 @@ bool ParticleSystem::b_LoadTexture(const char* filename)
 	if (particle_texture.id > 0)
 	{
 		b_UseTexture = true;
-
 		texture_source_rect =
 		{
 			0, 0,
