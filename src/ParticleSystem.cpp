@@ -57,10 +57,9 @@ bool ParticleSystem::LoadTexture(const char* filename)
 			static_cast<float>(particle_texture.width) * 0.5f,
 			static_cast<float>(particle_texture.height) * 0.5f
 		};
+
 		texture_data_cached = true;
-
 		GenTextureMipmaps(&particle_texture);
-
 		return true;
 	}
 
@@ -268,8 +267,8 @@ void ParticleSystem::Draw()
 		{
 			Rectangle dest =
 			{
-				p.position.x - texture_half_size.x,
-				p.position.y - texture_half_size.y,
+				p.position.x - texture_source_rect.x / 2,
+				p.position.y - texture_source_rect.y / 2,
 				texture_source_rect.width,
 				texture_source_rect.height
 			};
