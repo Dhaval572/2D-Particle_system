@@ -427,15 +427,15 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::Text("Texture Settings");
 
 	// Static buffer for texture path input
-	static char texture_path[256] = "";
-	static bool b_LoadFailed = false;
-	static char error_message[256] = "";
+	static char s_TexturePath[256] = "";
+	static bool sb_LoadFailed = false;
+	static char s_ErrorMessage[256] = "";
 
-	ImGui::TextWrapped("Path: %s", texture_path);
+	ImGui::TextWrapped("Path: %s", s_TexturePath);
 	if (ImGui::Button("Load"))
 	{
-		static const char* filters[4] = { ".png", ".jpg", ".jpeg", ".bmp" };
-		const char* path = tinyfd_openFileDialog
+		static const char* FILTERS[4] = { ".png", ".jpg", ".jpeg", ".bmp" };
+		const char* PATH = tinyfd_openFileDialog
 		(
 			"Select Texture File",
 			"",
@@ -444,35 +444,35 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 			nullptr,
 			0
 		);
-		if (path)
+		if (PATH)
 		{
-			strncpy(texture_path, path, sizeof(texture_path) - 1);
+			strncpy(s_TexturePath, PATH, sizeof(s_TexturePath) - 1);
 
-			if (ps.b_LoadTexture(texture_path))
+			if (ps.b_LoadTexture(s_TexturePath))
 			{
-				b_LoadFailed = false;
-				error_message[0] = '\0';
+				sb_LoadFailed = false;
+				s_ErrorMessage[0] = '\0';
 			}
 			else
 			{
-				b_LoadFailed = true;
-				snprintf(error_message, sizeof(error_message), "Failed to load: %s", texture_path);
+				sb_LoadFailed = true;
+				snprintf(s_ErrorMessage, sizeof(s_ErrorMessage), "Failed to load: %s", s_TexturePath);
 			}
 		}
 	}
 	else
 	{
-		b_LoadFailed = true;
-		strcpy(error_message, "Please load image");
+		sb_LoadFailed = true;
+		strcpy(s_ErrorMessage, "Please load image");
 	}
 
 	ImGui::SameLine(0.0f, 260.0f);
 	if (ImGui::Button("Unload Texture"))
 	{
 		ps.UnloadTexture();
-		b_LoadFailed = false;
-		strcpy(error_message, "");
-		texture_path[0] = '\0';
+		sb_LoadFailed = false;
+		strcpy(s_ErrorMessage, "");
+		s_TexturePath[0] = '\0';
 	}
 
 	if (ps.particle_texture.id > 0)
@@ -493,9 +493,9 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	{
 		ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Texture loaded and active");
 	}
-	else if (b_LoadFailed)
+	else if (sb_LoadFailed)
 	{
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "%s", error_message);
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "%s", s_ErrorMessage);
 	}
 	else
 	{
@@ -603,7 +603,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		{
 			ps.new_width = ps.tex_width;
 			ps.new_height = ps.tex_height;
-			ps.b_LoadTexture(texture_path);
+			ps.b_LoadTexture(s_TexturePath);
 		}
 	}
 
