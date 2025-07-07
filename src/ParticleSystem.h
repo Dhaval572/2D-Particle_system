@@ -36,7 +36,7 @@ private:
 	EmitterType e_EmitterType;
 	ParticleType e_ParticleType;
 	Texture2D particle_texture;
-	bool use_texture;
+	bool b_UseTexture;
 	float emission_rate;
 	float emission_timer;
 
@@ -67,7 +67,7 @@ private:
 	int tex_height;
 	int new_width;
 	int new_height;
-    bool texture_data_cached;
+    bool b_TextureDataCached;
 
 	Vector2 GetEmissionPoint();
 	void EmitParticle();
@@ -85,8 +85,8 @@ public:
 	void Draw();
 
 	// Texture management
-	bool LoadTexture(const char* filename);
+	bool b_LoadTexture(const char* filename);
 	void UnloadTexture();
 	void SetUseTexture(bool use);
-	bool IsUsingTexture() const;
+	bool b_IsUsingTexture() const;
 };

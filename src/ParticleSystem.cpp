@@ -8,7 +8,7 @@ ParticleSystem::ParticleSystem()
 	e_EmitterType(POINT),
 	e_ParticleType(CIRCULER),
 	particle_texture({}),
-	use_texture(false),
+	b_UseTexture(false),
 	emission_rate(50.0f),
 	emission_timer(0.0f),
 	velocity({ 0, -50 }),
@@ -34,7 +34,7 @@ ParticleSystem::~ParticleSystem()
 	UnloadTexture();
 }
 
-bool ParticleSystem::LoadTexture(const char* filename)
+bool ParticleSystem::b_LoadTexture(const char* filename)
 {
 	// Unload Previous texture 
 	UnloadTexture();
@@ -49,7 +49,7 @@ bool ParticleSystem::LoadTexture(const char* filename)
 	particle_texture = LoadTextureFromImage(img);
 	if (particle_texture.id > 0)
 	{
-		use_texture = true;
+		b_UseTexture = true;
 
 		texture_source_rect =
 		{
@@ -70,14 +70,14 @@ bool ParticleSystem::LoadTexture(const char* filename)
 			texture_source_rect.y / 2
 		};
 
-		texture_data_cached = true;
+		b_TextureDataCached = true;
 		GenTextureMipmaps(&particle_texture);
 		SetTextureFilter(particle_texture, TEXTURE_FILTER_TRILINEAR); // For smoothness
 		return true;
 	}
 
-	use_texture = false;
-	texture_data_cached = false;
+	b_UseTexture = false;
+	b_TextureDataCached = false;
 	return false;
 }
 
@@ -88,18 +88,18 @@ void ParticleSystem::UnloadTexture()
 		::UnloadTexture(particle_texture); // (Note:-   :: is used to use raylib function)
 		particle_texture = {};
 	}
-	use_texture = false;
-	texture_data_cached = false;
+	b_UseTexture = false;
+	b_TextureDataCached = false;
 }
 
 void ParticleSystem::SetUseTexture(bool use)
 {
-	use_texture = use && (particle_texture.id > 0);
+	b_UseTexture = use && (particle_texture.id > 0);
 }
 
-bool ParticleSystem::IsUsingTexture() const
+bool ParticleSystem::b_IsUsingTexture() const
 {
-	return use_texture && (particle_texture.id > 0);
+	return b_UseTexture && (particle_texture.id > 0);
 }
 
 Vector2 ParticleSystem::GetEmissionPoint()
@@ -268,7 +268,7 @@ void ParticleSystem::Draw()
 		draw_area.height
 	);
 
-	bool use_tex = IsUsingTexture() && texture_data_cached;
+	bool b_UseTex = b_IsUsingTexture() && b_TextureDataCached;
 
 	for (const auto& p : particles)
 	{
@@ -276,7 +276,7 @@ void ParticleSystem::Draw()
 			continue;
 
 		// If using texture, draw texture instead of geometric shapes
-		if (use_tex)	
+		if (b_UseTex)	
 		{
 			Rectangle dest =
 			{
@@ -428,7 +428,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	// Static buffer for texture path input
 	static char texture_path[256] = "";
-	static bool load_failed = false;
+	static bool b_LoadFailed = false;
 	static char error_message[256] = "";
 
 	ImGui::TextWrapped("Path: %s", texture_path);
@@ -448,21 +448,21 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		{
 			strncpy(texture_path, path, sizeof(texture_path) - 1);
 
-			if (ps.LoadTexture(texture_path))
+			if (ps.b_LoadTexture(texture_path))
 			{
-				load_failed = false;
+				b_LoadFailed = false;
 				error_message[0] = '\0';
 			}
 			else
 			{
-				load_failed = true;
+				b_LoadFailed = true;
 				snprintf(error_message, sizeof(error_message), "Failed to load: %s", texture_path);
 			}
 		}
 	}
 	else
 	{
-		load_failed = true;
+		b_LoadFailed = true;
 		strcpy(error_message, "Please load image");
 	}
 
@@ -470,17 +470,17 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	if (ImGui::Button("Unload Texture"))
 	{
 		ps.UnloadTexture();
-		load_failed = false;
+		b_LoadFailed = false;
 		strcpy(error_message, "");
 		texture_path[0] = '\0';
 	}
 
 	if (ps.particle_texture.id > 0)
 	{
-		bool use_texture = ps.IsUsingTexture();
-		if (ImGui::Checkbox("Use Texture", &use_texture))
+		bool b_UseTexture = ps.b_IsUsingTexture();
+		if (ImGui::Checkbox("Use Texture", &b_UseTexture))
 		{
-			ps.SetUseTexture(use_texture);
+			ps.SetUseTexture(b_UseTexture);
 		}
 	}
 	else
@@ -489,11 +489,11 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 
 	// Status display
-	if (ps.IsUsingTexture())
+	if (ps.b_IsUsingTexture())
 	{
 		ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Texture loaded and active");
 	}
-	else if (load_failed)
+	else if (b_LoadFailed)
 	{
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "%s", error_message);
 	}
@@ -519,7 +519,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	);
 
 	// Only show particle type selection if not using texture
-	if (!ps.IsUsingTexture())
+	if (!ps.b_IsUsingTexture())
 	{
 		static const char* s_PARTICLE_TYPES[] =
 		{
@@ -586,7 +586,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::SliderFloat("Min Life", &ps.min_life, 0.1f, 5.0f);
 	ImGui::SliderFloat("Max Life", &ps.max_life, 0.1f, 10.0f);
 
-	if(!ps.use_texture)
+	if(!ps.b_UseTexture)
 	{
 		ImGui::SliderFloat("Min Size", &ps.min_size, 1.0f, 20.0f);
 		ImGui::SliderFloat("Max Size", &ps.max_size, 1.0f, 50.0f);
@@ -603,7 +603,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		{
 			ps.new_width = ps.tex_width;
 			ps.new_height = ps.tex_height;
-			ps.LoadTexture(texture_path);
+			ps.b_LoadTexture(texture_path);
 		}
 	}
 
