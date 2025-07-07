@@ -446,6 +446,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 			nullptr,
 			0
 		);
+
 		if (PATH)
 		{
 			strncpy(s_TexturePath, PATH, sizeof(s_TexturePath) - 1);
@@ -479,10 +480,10 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	if (ps.particle_texture.id > 0)
 	{
-		bool b_UseTexture = ps.b_IsUsingTexture();
-		if (ImGui::Checkbox("Use Texture", &b_UseTexture))
+		static bool b_Use = ps.b_IsUsingTexture();
+		if (ImGui::Checkbox("Use Texture", &b_Use))
 		{
-			ps.SetUseTexture(b_UseTexture);
+			ps.SetUseTexture(b_Use);
 		}
 	}
 	else
@@ -596,10 +597,10 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	else
 	{
 		ImGui::InputInt("Width", &ps.tex_width);
-		ps.tex_width = Clamp(ps.tex_width, 1, 500);
+		ps.tex_width = Clamp(ps.tex_width, 1, 200);
 
 		ImGui::InputInt("Height", &ps.tex_height);
-		ps.tex_height = Clamp(ps.tex_height, 1, 500);
+		ps.tex_height = Clamp(ps.tex_height, 1, 200);
 
 		if(ImGui::Button("Confirm size"))
 		{
