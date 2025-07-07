@@ -62,6 +62,7 @@ private:
 	// For texture
 	Rectangle texture_source_rect;
     Vector2 texture_half_size;
+	Vector2 texture_center;
     bool texture_data_cached;
 
 	Vector2 GetEmissionPoint();
