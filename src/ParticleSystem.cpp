@@ -261,7 +261,7 @@ void ParticleSystem::Draw()
 		draw_area.height
 	);
 
-	const bool use_tex = IsUsingTexture() && texture_data_cached;
+	bool use_tex = IsUsingTexture() && texture_data_cached;
 
 	for (const auto& p : particles)
 	{
@@ -440,20 +440,17 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		if (path)
 		{
 			strncpy(texture_path, path, sizeof(texture_path) - 1);
-		}
-	}
 
-	if (strlen(texture_path) > 0)
-	{
-		if (ps.LoadTexture(texture_path))
-		{
-			load_failed = false;
-			strcpy(error_message, "");
-		}
-		else
-		{
-			load_failed = true;
-			snprintf(error_message, sizeof(error_message), "Failed to load: %s", texture_path);
+			if (ps.LoadTexture(texture_path))
+			{
+				load_failed = false;
+				error_message[0] = '\0';
+			}
+			else
+			{
+				load_failed = true;
+				snprintf(error_message, sizeof(error_message), "Failed to load: %s", texture_path);
+			}
 		}
 	}
 	else
