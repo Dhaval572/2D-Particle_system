@@ -199,7 +199,8 @@ void ParticleSystem::Update(float dt)
 			p.rotation += p.rotation_speed * dt;
 			p.life -= dt;
 
-			if (start_color.r != end_color.r || start_color.g != end_color.g ||
+			if (start_color.r != end_color.r || 
+				start_color.g != end_color.g ||
 				start_color.b != end_color.b)
 			{
 				float t = 1.0f - (p.life / p.max_life);
