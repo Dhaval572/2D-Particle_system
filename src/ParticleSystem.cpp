@@ -173,10 +173,12 @@ void ParticleSystem::Update(float dt)
 
 	// Emit new particles
 	emission_timer += dt;
-	while (emission_timer >= 1.0f / emission_rate)
+	// Optimized this by avoiding recomputation
+	const float EMISSION_INTERVAL = 1.0f / emission_rate;
+	while (emission_timer >= EMISSION_INTERVAL)
 	{
 		EmitParticle();
-		emission_timer -= 1.0f / emission_rate;
+		emission_timer -= EMISSION_INTERVAL;
 	}
 
 	// Update existing particles
@@ -599,7 +601,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ImGui::InputInt("Height", &ps.tex_height);
 		ps.tex_height = Clamp(ps.tex_height, 1, 500);
 
-		if(ImGui::Button("Confirm changes"))
+		if(ImGui::Button("Confirm size"))
 		{
 			ps.new_width = ps.tex_width;
 			ps.new_height = ps.tex_height;
