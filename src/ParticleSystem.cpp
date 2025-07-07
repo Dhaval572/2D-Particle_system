@@ -9,8 +9,6 @@ ParticleSystem::ParticleSystem()
 	e_ParticleType(CIRCULER),
 	particle_texture({}),
 	use_texture(false),
-	width_changed(false),
-	height_changed(false),
 	emission_rate(50.0f),
 	emission_timer(0.0f),
 	velocity({ 0, -50 }),
@@ -43,9 +41,9 @@ bool ParticleSystem::LoadTexture(const char* filename)
 
 	Image img = LoadImage(filename);
 
-	if (tex_width > 0 && tex_height > 0)
+	if (new_width > 0 && new_height > 0)
 	{
-		ImageResize(&img, tex_width, tex_height);
+		ImageResize(&img, new_width, new_height);
 	}
 
 	particle_texture = LoadTextureFromImage(img);
@@ -595,14 +593,16 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 	else
 	{
-		ps.width_changed = ImGui::InputInt("Width", &ps.tex_width);
+		ImGui::InputInt("Width", &ps.tex_width);
 		ps.tex_width = Clamp(ps.tex_width, 1, 500);
 
-		ps.height_changed = ImGui::InputInt("Height", &ps.tex_height);
+		ImGui::InputInt("Height", &ps.tex_height);
 		ps.tex_height = Clamp(ps.tex_height, 1, 500);
 
-		if ((ps.width_changed || ps.height_changed))
+		if(ImGui::Button("Confirm changes"))
 		{
+			ps.new_width = ps.tex_width;
+			ps.new_height = ps.tex_height;
 			ps.LoadTexture(texture_path);
 		}
 	}

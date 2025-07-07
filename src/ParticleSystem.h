@@ -65,9 +65,9 @@ private:
 	Vector2 texture_center;
 	int tex_width;
 	int tex_height;
+	int new_width;
+	int new_height;
     bool texture_data_cached;
-	bool width_changed;
-	bool height_changed;
 
 	Vector2 GetEmissionPoint();
 	void EmitParticle();
