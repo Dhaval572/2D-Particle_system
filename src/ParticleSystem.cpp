@@ -9,6 +9,8 @@ ParticleSystem::ParticleSystem()
 	e_ParticleType(CIRCULER),
 	particle_texture({}),
 	use_texture(false),
+	width_changed(false),
+	height_changed(false),
 	emission_rate(50.0f),
 	emission_timer(0.0f),
 	velocity({ 0, -50 }),
@@ -39,7 +41,13 @@ bool ParticleSystem::LoadTexture(const char* filename)
 	// Unload Previous texture 
 	UnloadTexture();
 
-	particle_texture = LoadTextureFromImage(LoadImage(filename));
+	Image img = LoadImage(filename);
+	if (tex_width > 0 && tex_height > 0)
+	{
+		ImageResize(&img, tex_width, tex_height);
+	}
+
+	particle_texture = LoadTextureFromImage(img);
 
 	if (particle_texture.id > 0)
 	{
@@ -66,6 +74,7 @@ bool ParticleSystem::LoadTexture(const char* filename)
 
 		texture_data_cached = true;
 		GenTextureMipmaps(&particle_texture);
+		SetTextureFilter(particle_texture, TEXTURE_FILTER_TRILINEAR); // For smoothness
 		return true;
 	}
 
@@ -269,7 +278,7 @@ void ParticleSystem::Draw()
 			continue;
 
 		// If using texture, draw texture instead of geometric shapes
-		if (use_tex)
+		if (use_tex)	
 		{
 			Rectangle dest =
 			{
@@ -579,8 +588,22 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::SliderFloat("Min Life", &ps.min_life, 0.1f, 5.0f);
 	ImGui::SliderFloat("Max Life", &ps.max_life, 0.1f, 10.0f);
 
-	ImGui::SliderFloat("Min Size", &ps.min_size, 1.0f, 20.0f);
-	ImGui::SliderFloat("Max Size", &ps.max_size, 1.0f, 50.0f);
+	if(!ps.use_texture)
+	{
+		ImGui::SliderFloat("Min Size", &ps.min_size, 1.0f, 20.0f);
+		ImGui::SliderFloat("Max Size", &ps.max_size, 1.0f, 50.0f);
+	}
+	else
+	{
+		ps.width_changed = ImGui::SliderInt("Texture Width", &ps.tex_width, 1, 500);
+		ps.height_changed = ImGui::SliderInt("Texture Height", &ps.tex_height, 1, 500);
+
+		// Automatically reload texture if dimensions changed and a texture is loaded
+		if ((ps.width_changed || ps.height_changed))
+		{
+			ps.LoadTexture(texture_path);
+		}
+	}
 
 	ImGui::SliderFloat("Rotation Speed", &ps.rotation_speed, -10.0f, 10.0f);
 

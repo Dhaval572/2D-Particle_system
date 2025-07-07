@@ -63,7 +63,11 @@ private:
 	Rectangle texture_source_rect;
     Vector2 texture_half_size;
 	Vector2 texture_center;
+	int tex_width;
+	int tex_height;
     bool texture_data_cached;
+	bool width_changed;
+	bool height_changed;
 
 	Vector2 GetEmissionPoint();
 	void EmitParticle();
@@ -85,7 +89,4 @@ public:
 	void UnloadTexture();
 	void SetUseTexture(bool use);
 	bool IsUsingTexture() const;
-
-	// Texture access for UI preview
-	const Texture2D& GetTexture() const { return particle_texture; }
 };
