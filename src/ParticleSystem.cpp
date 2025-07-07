@@ -47,6 +47,7 @@ bool ParticleSystem::b_LoadTexture(const char* filename)
 	}
 
 	particle_texture = LoadTextureFromImage(img);
+	UnloadImage(img);
 	if (particle_texture.id > 0)
 	{
 		b_UseTexture = true;
