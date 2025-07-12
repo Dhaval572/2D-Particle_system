@@ -7,6 +7,7 @@
 #include <random>
 #include <raymath.h>
 #include "Utility.h"
+#include "Export.h"
 #include "tinyfiledialogs.h"
 
 class ParticleSaver;
@@ -26,7 +27,7 @@ struct t_Particle
 
 class ParticleSystem
 {
-private:
+protected:
 	friend class ParticleSaver;
 	std::vector<t_Particle> particles;
 	std::mt19937 rng;
@@ -61,13 +62,16 @@ private:
 
 	// For texture
 	Rectangle texture_source_rect;
-    Vector2 texture_half_size;
+	Vector2 texture_half_size;
 	Vector2 texture_center;
 	int tex_width;
 	int tex_height;
 	int new_width;
 	int new_height;
-    bool b_TextureDataCached;
+	bool b_TextureDataCached;
+
+	// Export
+
 
 	Vector2 GetEmissionPoint();
 	void EmitParticle();

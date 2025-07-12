@@ -106,41 +106,41 @@ Vector2 ParticleSystem::GetEmissionPoint()
 {
 	switch (e_EmitterType)
 	{
-		case POINT:
-			return position;
-			
-		case LINE:
+	case POINT:
+		return position;
+
+	case LINE:
+	{
+		float t = dist(rng);
+		return
 		{
-			float t = dist(rng);
-			return
-			{
-				position.x + (t - 0.5f) * line_length,
-				position.y
-			};
-		}
-	
-		case CIRCLE:
+			position.x + (t - 0.5f) * line_length,
+			position.y
+		};
+	}
+
+	case CIRCLE:
+	{
+		float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
+		float radius = dist(rng) * circle_radius;	  // [0, circle_radius]
+		return
 		{
-			float angle = (dist(rng) * 2.0f - 1.0f) * PI; // [-PI, PI]
-			float radius = dist(rng) * circle_radius;	  // [0, circle_radius]
-			return
-			{
-				position.x + cosf(angle) * radius,
-				position.y + sinf(angle) * radius
-			};
-		}
-	
-		case RECTANGLE:
+			position.x + cosf(angle) * radius,
+			position.y + sinf(angle) * radius
+		};
+	}
+
+	case RECTANGLE:
+	{
+		return
 		{
-			return
-			{
-				position.x + (dist(rng) - 0.5f) * rect_size.x,
-				position.y + (dist(rng) - 0.5f) * rect_size.y
-			};
-		}
-	
-		default:
-			return position;
+			position.x + (dist(rng) - 0.5f) * rect_size.x,
+			position.y + (dist(rng) - 0.5f) * rect_size.y
+		};
+	}
+
+	default:
+		return position;
 	}
 }
 
@@ -200,7 +200,7 @@ void ParticleSystem::Update(float dt)
 			p.rotation += p.rotation_speed * dt;
 			p.life -= dt;
 
-			if (start_color.r != end_color.r || 
+			if (start_color.r != end_color.r ||
 				start_color.g != end_color.g ||
 				start_color.b != end_color.b)
 			{
@@ -265,9 +265,9 @@ void ParticleSystem::Draw()
 	DrawRectangleLinesEx(draw_area, 2, GRAY);
 	BeginScissorMode
 	(
-		draw_area.x, 
-		draw_area.y, 
-		draw_area.width, 
+		draw_area.x,
+		draw_area.y,
+		draw_area.width,
 		draw_area.height
 	);
 
@@ -279,7 +279,7 @@ void ParticleSystem::Draw()
 			continue;
 
 		// If using texture, draw texture instead of geometric shapes
-		if (b_UseTex)	
+		if (b_UseTex)
 		{
 			Rectangle dest =
 			{
@@ -288,6 +288,7 @@ void ParticleSystem::Draw()
 				texture_source_rect.width,
 				texture_source_rect.height
 			};
+
 			DrawTexturePro
 			(
 				particle_texture,
@@ -590,22 +591,21 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::SliderFloat("Min Life", &ps.min_life, 0.1f, 5.0f);
 	ImGui::SliderFloat("Max Life", &ps.max_life, 0.1f, 10.0f);
 
-	if(!ps.b_UseTexture)
+	if (!ps.b_UseTexture)
 	{
 		ImGui::SliderFloat("Min Size", &ps.min_size, 1.0f, 20.0f);
 		ImGui::SliderFloat("Max Size", &ps.max_size, 1.0f, 50.0f);
-		ImGui::SliderFloat("Rotation Speed", &ps.rotation_speed, -10.0f, 10.0f);
 
 		ImGui::Separator();
 		ImGui::Text("Colors");
 		ImVec4 start_col = ColorToImVec4(ps.start_color);
-		if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float *>(&start_col)))
+		if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float*>(&start_col)))
 		{
 			ps.start_color = ImVec4ToColor(start_col);
 		}
 
 		ImVec4 end_col = ColorToImVec4(ps.end_color);
-		if (ImGui::ColorEdit4("End Color", reinterpret_cast<float *>(&end_col)))
+		if (ImGui::ColorEdit4("End Color", reinterpret_cast<float*>(&end_col)))
 		{
 			ps.end_color = ImVec4ToColor(end_col);
 		}
@@ -618,13 +618,15 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ImGui::InputInt("Height", &ps.tex_height);
 		ps.tex_height = Clamp(ps.tex_height, 1, 200);
 
-		if(ImGui::Button("Confirm size"))
+		if (ImGui::Button("Confirm size"))
 		{
 			ps.new_width = ps.tex_width;
 			ps.new_height = ps.tex_height;
 			ps.b_LoadTexture(s_TexturePath);
 		}
 	}
+
+	ImGui::SliderFloat("Rotation Speed", &ps.rotation_speed, -10.0f, 10.0f);
 
 	ImGui::NewLine();
 	if (ImGui::Button("Clear Particle"))
@@ -633,10 +635,16 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 
 	ImGui::SameLine(0.0f, 60.0f);
-	if (ImGui::Button("Save Preset")){}
+	if (ImGui::Button("Save Preset"))
+	{
+
+	}
 
 	ImGui::SameLine(0.0f, 60.0f);
-	if (ImGui::Button("Load Preset")){}
+	if (ImGui::Button("Load Preset"))
+	{
+
+	}
 
 	ImGui::Text("Active Particles: %d", ps.GetParticleCount());
 	ImGui::End();

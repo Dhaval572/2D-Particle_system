@@ -16,8 +16,8 @@ void App::Init()
 	rlImGuiSetup(true);
 	ImCustomTheme();
 
-	particle_system.position.x = GetScreenWidth() * 0.05f + GetScreenWidth() * 0.6f / 2.0f;
-	particle_system.position.y = GetScreenHeight() * 0.1f + GetScreenHeight() * 0.8f / 2.0f;
+	d.position.x = GetScreenWidth() * 0.05f + GetScreenWidth() * 0.6f / 2.0f;
+	d.position.y = GetScreenHeight() * 0.1f + GetScreenHeight() * 0.8f / 2.0f;
 }
 
 void App::Run()
@@ -28,8 +28,11 @@ void App::Run()
 	{
 		if (IsWindowResized())
 		{
-			particle_system.position.x = GetScreenWidth() * 0.05f + GetScreenWidth() * 0.6f / 2.0f;
-			particle_system.position.y = GetScreenHeight() * 0.1f + GetScreenHeight() * 0.8f / 2.0f;
+			d.position.x =
+				GetScreenWidth() * 0.05f + GetScreenWidth() * 0.6f / 2.0f;
+
+			d.position.y =
+				GetScreenHeight() * 0.1f + GetScreenHeight() * 0.8f / 2.0f;
 		}
 
 		float delta_time = GetFrameTime();
@@ -40,7 +43,7 @@ void App::Run()
 
 void App::Update(float dt)
 {
-	particle_system.Update(dt);
+	d.Update(dt);
 }
 
 void App::Render()
@@ -48,10 +51,10 @@ void App::Render()
 	BeginDrawing();
 	ClearBackground(BLACK);
 
-	particle_system.Draw();
+	d.Draw();
 
 	rlImGuiBegin();
-	DrawParticleSystemUI(particle_system);
+	DrawParticleSystemUI(d);
 	rlImGuiEnd();
 
 	EndDrawing();

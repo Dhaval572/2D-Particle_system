@@ -2,9 +2,15 @@
 #include "ParticleSystem.h"
 #include "ImGuiCustomTheme.h"
 
+class Demo : public ParticleSystem
+{
+	
+};
+
 class App
 {
 public:
+
 	~App();
 	void Run();
 
@@ -14,5 +20,5 @@ private:
 	void Render();
 	void Shutdown();
 
-	ParticleSystem particle_system;
+	Demo d;
 };
