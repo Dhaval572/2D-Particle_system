@@ -26,6 +26,8 @@ struct ParticlePreset
 	Vector2 rect_size;
 	bool b_Active;
 	float tex_size_percent;
+	int tex_width;
+	int tex_height;
 };
 
 class ParticleSaver
