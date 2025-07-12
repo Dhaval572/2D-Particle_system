@@ -2,6 +2,7 @@
 #include "ParticleSystem.h"
 #include "ImGuiCustomTheme.h"
 
+// Debug inheritance 
 class Demo : public ParticleSystem
 {
 public:
