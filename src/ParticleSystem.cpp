@@ -647,22 +647,44 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ps.Clear();
 	}
 
-	static ParticleSaver p_saver;
-	ImGui::SameLine(0.0f, 60.0f);
-	if (ImGui::Button("Save Preset"))
-	{
-		p_saver.SavePreset(ps);
-	}
+	static char export_filename[64] = "";
+    static ParticleSaver p_saver;
+    static bool b_Export = false;
+    ImGui::SameLine(0.0f, 60.0f);
+    if (ImGui::Button("Export"))
+    {
+        b_Export = true;
+        ImGui::OpenPopup("Name");
+    }
 
-	ImGui::SameLine(0.0f, 60.0f);
-	if (ImGui::Button("Load Preset"))
-	{
-		p_saver.LoadPreset(ps);
-	}
+    if (ImGui::BeginPopup("Name"))
+    {
+        ImGui::Text("Enter filename:");
+        ImGui::InputText("##filename", export_filename, IM_ARRAYSIZE(export_filename));
+        ImGui::SameLine();
+        if (ImGui::Button("Export") && export_filename[0] != '\0')
+		{
+			const char* save_path = tinyfd_saveFileDialog
+			(
+				"Save location: ",
+				export_filename,
+				1,
+				NULL,
+				NULL
+			);
 
-	if (ImGui::Button("Export"))
-	{
-		p_saver.Export(ps);
+			if (save_path && save_path[0] != '\0')
+			{
+				p_saver.Export(ps,save_path);
+				export_filename[0] = '\0';
+			}
+			
+			b_Export = false;
+			ImGui::CloseCurrentPopup();
+
+		}
+		ImGui::EndPopup();
+
 	}
 
 	ImGui::Text("Active Particles: %d", ps.GetParticleCount());

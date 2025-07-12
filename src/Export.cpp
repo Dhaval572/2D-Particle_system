@@ -1,76 +1,19 @@
 #include "Export.h"
 #include <sstream>
 #include <iomanip>
-
-void ParticleSaver::SavePreset(ParticleSystem& system)
-{
-	SavedPreset = ParticlePreset
-	{
-		system.max_particles,
-		system.position,
-		system.e_EmitterType,
-		system.e_ParticleType,
-		system.emission_rate,
-		system.velocity,
-		system.velocity_variation,
-		system.acceleration,
-		system.start_color,
-		system.end_color,
-		system.min_life,
-		system.max_life,
-		system.min_size,
-		system.max_size,
-		system.rotation_speed,
-		system.line_length,
-		system.circle_radius,
-		system.rect_size,
-		system.b_Active,
-		system.tex_size_percent,
-		system.tex_width,
-		system.tex_height
-	};
-}
-
-void ParticleSaver::LoadPreset(ParticleSystem& system)
-{
-	if (!SavedPreset.has_value()) return;
-
-	const auto& PRESET = SavedPreset.value();
-	system.max_particles = PRESET.max_particles;
-	system.e_EmitterType = PRESET.e_EmitterType;
-	system.e_ParticleType = PRESET.e_ParticleType;
-	system.emission_rate = PRESET.emission_rate;
-	system.velocity = PRESET.velocity;
-	system.velocity_variation = PRESET.velocity_variation;
-	system.acceleration = PRESET.acceleration;
-	system.start_color = PRESET.start_color;
-	system.end_color = PRESET.end_color;
-	system.min_life = PRESET.min_life;
-	system.max_life = PRESET.max_life;
-	system.min_size = PRESET.min_size;
-	system.max_size = PRESET.max_size;
-	system.rotation_speed = PRESET.rotation_speed;
-	system.line_length = PRESET.line_length;
-	system.circle_radius = PRESET.circle_radius;
-	system.rect_size = PRESET.rect_size;
-	system.b_Active = PRESET.b_Active;
-	system.tex_size_percent = PRESET.tex_size_percent;
-	system.tex_width = PRESET.tex_width;
-	system.tex_height = PRESET.tex_height;
-
-	system.Clear();
-}
+#include <string>
 
 // Helper function to convert enum to string
 static std::string EmitterTypeToString(EmitterType type)
 {
 	switch (type)
 	{
-	case POINT: return "POINT";
-	case LINE: return "LINE";
-	case CIRCLE: return "CIRCLE";
-	case RECTANGLE: return "RECTANGLE";
-	default: return "POINT";
+		case POINT: return "POINT";
+		case LINE: return "LINE";
+		case CIRCLE: return "CIRCLE";
+		case RECTANGLE: return "RECTANGLE";
+
+		default: return "POINT";
 	}
 }
 
@@ -78,11 +21,12 @@ static std::string ParticleTypeToString(ParticleType type)
 {
 	switch (type)
 	{
-	case CIRCULER: return "CIRCULER";
-	case SQUARE: return "SQUARE";
-	case TRIANGLE: return "TRIANGLE";
-	case K_CHAR: return "K_CHAR";
-	default: return "CIRCULER";
+		case CIRCULER: return "CIRCULER";
+		case SQUARE: return "SQUARE";
+		case TRIANGLE: return "TRIANGLE";
+		case K_CHAR: return "K_CHAR";
+		
+		default: return "CIRCULER";
 	}
 }
 
@@ -90,7 +34,12 @@ static std::string ParticleTypeToString(ParticleType type)
 static std::string ColorToString(const Color& color)
 {
 	std::ostringstream oss;
-	oss << "{ " << (int)color.r << ", " << (int)color.g << ", " << (int)color.b << ", " << (int)color.a << " }";
+	oss << "{ " << 
+	(int)color.r << ", " << 
+	(int)color.g << ", " << 
+	(int)color.b << ", " << 
+	(int)color.a << " }";
+
 	return oss.str();
 }
 
@@ -102,11 +51,12 @@ static std::string Vector2ToString(const Vector2& vec)
 	return oss.str();
 }
 
-void ParticleSaver::Export(ParticleSystem& system)
+void ParticleSaver::Export(ParticleSystem& system, const char* path)
 {
-	std::ofstream file("export.h");
+	std::ofstream file(std::string(path) + ".h");
 
-	if (!file.is_open()) return;
+	if (!file.is_open()) 
+		return;
 
 	std::ostringstream constructor_params;
 	constructor_params << std::fixed << std::setprecision(2);
@@ -152,7 +102,6 @@ void ParticleSaver::Export(ParticleSystem& system)
 		"#include <vector>\n"
 		"#include <random>\n"
 		"#include <raymath.h>\n"
-		"#include \"tinyfiledialogs.h\"\n"
 		"\n"
 		"struct t_Particle\n"
 		"{\n"
@@ -637,7 +586,5 @@ void ParticleSaver::Export(ParticleSystem& system)
 		"}\n";
 
 	file << particle_code;
-
-
 	file.close();
 }

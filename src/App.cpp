@@ -16,8 +16,8 @@ void App::Init()
 	rlImGuiSetup(true);
 	ImCustomTheme();
 
-	d.position.x = GetScreenWidth() * 0.05f + GetScreenWidth() * 0.6f / 2.0f;
-	d.position.y = GetScreenHeight() * 0.1f + GetScreenHeight() * 0.8f / 2.0f;
+	ps.position.x = GetScreenWidth() * 0.05f + GetScreenWidth() * 0.6f / 2.0f;
+	ps.position.y = GetScreenHeight() * 0.1f + GetScreenHeight() * 0.8f / 2.0f;
 }
 
 void App::Run()
@@ -28,10 +28,10 @@ void App::Run()
 	{
 		if (IsWindowResized())
 		{
-			d.position.x =
+			ps.position.x =
 				GetScreenWidth() * 0.05f + GetScreenWidth() * 0.6f / 2.0f;
 
-			d.position.y =
+			ps.position.y =
 				GetScreenHeight() * 0.1f + GetScreenHeight() * 0.8f / 2.0f;
 		}
 
@@ -43,7 +43,7 @@ void App::Run()
 
 void App::Update(float dt)
 {
-	d.Update(dt);
+	ps.Update(dt);
 }
 
 void App::Render()
@@ -51,10 +51,10 @@ void App::Render()
 	BeginDrawing();
 	ClearBackground(BLACK);
 
-	d.Draw();
+	ps.Draw();
 
 	rlImGuiBegin();
-	DrawParticleSystemUI(d);
+	DrawParticleSystemUI(ps);
 	rlImGuiEnd();
 
 	EndDrawing();
