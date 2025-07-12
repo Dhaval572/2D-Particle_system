@@ -1,36 +1,36 @@
 ﻿#include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem()
-	: max_particles(1000),
-	rng(std::random_device{}()),
-	dist(0.0f, 1.0f),
-	position({}),
-	e_EmitterType(POINT),
-	e_ParticleType(CIRCULER),
-	particle_texture({}),
-	b_UseTexture(false),
-	emission_rate(50.0f),
-	emission_timer(0.0f),
-	velocity({ 0, -50 }),
-	velocity_variation({ 20, 20 }),
-	acceleration({ 0, 98 }),
-	start_color(DARKGREEN),
-	end_color(GREEN),
-	min_life(1.0f),
-	max_life(3.0f),
-	min_size(2.0f),
-	max_size(8.0f),
-	rotation_speed(0.0f),
-	line_length(100.0f),
-	circle_radius(50.0f),
-	rect_size({ 100, 100 }),
-	b_Active(true),
-	tex_width(0),
-	tex_height(0),
-	original_tex_width(0),
-	original_tex_height(0),
-	tex_size_percent(100.f)
-{
+    : max_particles(1000),
+	  rng(std::random_device{}()),
+	  dist(0.0f, 1.0f),
+	  position({}),
+	  e_EmitterType(POINT),
+	  e_ParticleType(CIRCULER),
+	  particle_texture({}),
+	  b_UseTexture(false),
+	  emission_rate(50.0f),
+	  emission_timer(0.0f),
+	  velocity({ 0, -50 }),
+	  velocity_variation({ 20, 20 }),
+	  acceleration({ 0, 98 }),
+	  start_color(DARKGREEN),
+	  end_color(GREEN),
+	  min_life(1.0f),
+	  max_life(3.0f),
+	  min_size(2.0f),
+	  max_size(8.0f),
+	  rotation_speed(0.0f),
+	  line_length(100.0f),
+	  circle_radius(50.0f),
+	  rect_size({ 100, 100 }),
+	  b_Active(true),
+	  tex_width(0),
+	  tex_height(0),
+	  original_tex_width(0),
+	  original_tex_height(0),
+	  tex_size_percent(100.f)
+{  
 	particles.reserve(max_particles);
 }
 
@@ -95,7 +95,7 @@ void ParticleSystem::UnloadTexture()
 {
 	if (particle_texture.id > 0)
 	{
-		::UnloadTexture(particle_texture); // (Note:-   :: is used to use raylib function)
+		::UnloadTexture(particle_texture); // (Note:- :: is used to use raylib function)
 		particle_texture = {};
 	}
 	b_UseTexture = false;
@@ -495,10 +495,10 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	if (ps.particle_texture.id > 0)
 	{
-		static bool b_Use = ps.b_IsUsingTexture();
-		if (ImGui::Checkbox("Use Texture", &b_Use))
+		static bool sb_Use = ps.b_IsUsingTexture();
+		if (ImGui::Checkbox("Use Texture", &sb_Use))
 		{
-			ps.SetUseTexture(b_Use);
+			ps.SetUseTexture(sb_Use);
 		}
 	}
 	else
@@ -647,39 +647,39 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ps.Clear();
 	}
 
-	static char export_filename[64] = "";
-    static ParticleSaver p_saver;
-    static bool b_Export = false;
+	static char s_Filename[64] = "";
+    static ParticleSaver s_Saver;
+    static bool sb_Export = false;
     ImGui::SameLine(0.0f, 60.0f);
     if (ImGui::Button("Export"))
     {
-        b_Export = true;
+        sb_Export = true;
         ImGui::OpenPopup("Name");
     }
 
     if (ImGui::BeginPopup("Name"))
     {
         ImGui::Text("Enter filename:");
-        ImGui::InputText("##filename", export_filename, IM_ARRAYSIZE(export_filename));
+        ImGui::InputText("##filename", s_Filename, IM_ARRAYSIZE(s_Filename));
         ImGui::SameLine();
-        if (ImGui::Button("Export") && export_filename[0] != '\0')
+        if (ImGui::Button("Export") && s_Filename[0] != '\0')
 		{
-			const char* save_path = tinyfd_saveFileDialog
+			const char* SAVE_PATH = tinyfd_saveFileDialog
 			(
 				"Save location: ",
-				export_filename,
+				s_Filename,
 				1,
 				NULL,
 				NULL
 			);
 
-			if (save_path && save_path[0] != '\0')
+			if (SAVE_PATH && SAVE_PATH[0] != '\0')
 			{
-				p_saver.Export(ps,save_path);
-				export_filename[0] = '\0';
+				s_Saver.Export(ps,SAVE_PATH);
+				s_Filename[0] = '\0';
 			}
 			
-			b_Export = false;
+			sb_Export = false;
 			ImGui::CloseCurrentPopup();
 
 		}

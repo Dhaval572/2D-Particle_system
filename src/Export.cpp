@@ -4,7 +4,7 @@
 #include <string>
 
 // Helper function to convert enum to string
-static std::string EmitterTypeToString(EmitterType type)
+static std::string sf_EmitterTypeToString(EmitterType type)
 {
 	switch (type)
 	{
@@ -17,7 +17,7 @@ static std::string EmitterTypeToString(EmitterType type)
 	}
 }
 
-static std::string ParticleTypeToString(ParticleType type)
+static std::string sf_ParticleTypeToString(ParticleType type)
 {
 	switch (type)
 	{
@@ -31,7 +31,7 @@ static std::string ParticleTypeToString(ParticleType type)
 }
 
 // Helper function to format Color as initializer
-static std::string ColorToString(const Color& color)
+static std::string sf_ColorToString(const Color& color)
 {
 	std::ostringstream oss;
 	oss << "{ " << 
@@ -44,7 +44,7 @@ static std::string ColorToString(const Color& color)
 }
 
 // Helper function to format Vector2 as initializer
-static std::string Vector2ToString(const Vector2& vec)
+static std::string sf_Vector2ToString(const Vector2& vec)
 {
 	std::ostringstream oss;
 	oss << std::fixed << std::setprecision(2) << "{ " << vec.x << "f, " << vec.y << "f }";
@@ -65,18 +65,18 @@ void ParticleSaver::Export(ParticleSystem& system, const char* path)
 		<< "\t: max_particles(" << system.max_particles << "),\n"
 		<< "\trng(std::random_device{}()),\n"
 		<< "\tdist(0.0f, 1.0f),\n"
-		<< "\tposition(" << Vector2ToString(system.position) << "),\n"
-		<< "\te_EmitterType(" << EmitterTypeToString(system.e_EmitterType) << "),\n"
-		<< "\te_ParticleType(" << ParticleTypeToString(system.e_ParticleType) << "),\n"
+		<< "\tposition(" << sf_Vector2ToString(system.position) << "),\n"
+		<< "\te_EmitterType(" << sf_EmitterTypeToString(system.e_EmitterType) << "),\n"
+		<< "\te_ParticleType(" << sf_ParticleTypeToString(system.e_ParticleType) << "),\n"
 		<< "\tparticle_texture({}),\n"
 		<< "\tb_UseTexture(" << (system.b_UseTexture ? "true" : "false") << "),\n"
 		<< "\temission_rate(" << system.emission_rate << "f),\n"
 		<< "\temission_timer(0.0f),\n"
-		<< "\tvelocity(" << Vector2ToString(system.velocity) << "),\n"
-		<< "\tvelocity_variation(" << Vector2ToString(system.velocity_variation) << "),\n"
-		<< "\tacceleration(" << Vector2ToString(system.acceleration) << "),\n"
-		<< "\tstart_color(" << ColorToString(system.start_color) << "),\n"
-		<< "\tend_color(" << ColorToString(system.end_color) << "),\n"
+		<< "\tvelocity(" << sf_Vector2ToString(system.velocity) << "),\n"
+		<< "\tvelocity_variation(" << sf_Vector2ToString(system.velocity_variation) << "),\n"
+		<< "\tacceleration(" << sf_Vector2ToString(system.acceleration) << "),\n"
+		<< "\tstart_color(" << sf_ColorToString(system.start_color) << "),\n"
+		<< "\tend_color(" << sf_ColorToString(system.end_color) << "),\n"
 		<< "\tmin_life(" << system.min_life << "f),\n"
 		<< "\tmax_life(" << system.max_life << "f),\n"
 		<< "\tmin_size(" << system.min_size << "f),\n"
@@ -84,7 +84,7 @@ void ParticleSaver::Export(ParticleSystem& system, const char* path)
 		<< "\trotation_speed(" << system.rotation_speed << "f),\n"
 		<< "\tline_length(" << system.line_length << "f),\n"
 		<< "\tcircle_radius(" << system.circle_radius << "f),\n"
-		<< "\trect_size(" << Vector2ToString(system.rect_size) << "),\n"
+		<< "\trect_size(" << sf_Vector2ToString(system.rect_size) << "),\n"
 		<< "\tb_Active(" << (system.b_Active ? "true" : "false") << "),\n"
 		<< "\ttex_width(" << system.tex_width << "),\n"
 		<< "\ttex_height(" << system.tex_height << "),\n"
