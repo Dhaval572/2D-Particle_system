@@ -24,7 +24,12 @@ ParticleSystem::ParticleSystem()
 	line_length(100.0f),
 	circle_radius(50.0f),
 	rect_size({ 100, 100 }),
-	b_Active(true)
+	b_Active(true),
+	tex_width(0),
+	tex_height(0),
+	original_tex_width(0),
+	original_tex_height(0),
+	tex_size_percent(100.f)
 {
 	particles.reserve(max_particles);
 }
@@ -40,6 +45,9 @@ bool ParticleSystem::b_LoadTexture(const char* filename)
 	UnloadTexture();
 
 	Image img = LoadImage(filename);
+
+	original_tex_width = img.width;
+	original_tex_height = img.height;
 
 	if (new_width > 0 && new_height > 0)
 	{
@@ -612,11 +620,11 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 	else
 	{
-		ImGui::InputInt("Width", &ps.tex_width);
-		ps.tex_width = Clamp(ps.tex_width, 1, 200);
-
-		ImGui::InputInt("Height", &ps.tex_height);
-		ps.tex_height = Clamp(ps.tex_height, 1, 200);
+		if (ImGui::SliderFloat("Texture Size (%)", &ps.tex_size_percent, 1.0f, 200.0f))
+		{
+			ps.tex_width = static_cast<int>((ps.original_tex_width * ps.tex_size_percent) / 100);
+			ps.tex_height = static_cast<int>((ps.original_tex_height * ps.tex_size_percent) / 100);
+		}
 
 		if (ImGui::Button("Confirm size"))
 		{
