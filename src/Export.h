@@ -1,5 +1,6 @@
 #pragma once
 #include <optional>
+#include <fstream>
 #include "ParticleSystem.h"
 
 class ParticleSystem;
@@ -38,4 +39,5 @@ private:
 public:
 	void SavePreset(ParticleSystem& system);
 	void LoadPreset(ParticleSystem& system);
+	void Export(ParticleSystem& system);
 };

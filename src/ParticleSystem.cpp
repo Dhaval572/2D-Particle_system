@@ -48,6 +48,9 @@ bool ParticleSystem::b_LoadTexture(const char* filename)
 	original_tex_width = img.width;
 	original_tex_height = img.height;
 
+	new_width = static_cast<int>((original_tex_width * tex_size_percent) / 100);
+	new_height = static_cast<int>((original_tex_height * tex_size_percent) / 100);
+
 	if (new_width > 0 && new_height > 0)
 	{
 		ImageResize(&img, new_width, new_height);
@@ -655,6 +658,11 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	if (ImGui::Button("Load Preset"))
 	{
 		p_saver.LoadPreset(ps);
+	}
+
+	if (ImGui::Button("Export"))
+	{
+		p_saver.Export(ps);
 	}
 
 	ImGui::Text("Active Particles: %d", ps.GetParticleCount());
