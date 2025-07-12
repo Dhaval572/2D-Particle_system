@@ -6,11 +6,11 @@
 #include <vector>
 #include <random>
 #include <raymath.h>
-#include "Utility.h"
 #include "Export.h"
+#include "Utility.h"
 #include "tinyfiledialogs.h"
 
-class ParticleSaver;
+//class ParticleSaver;
 struct t_Particle
 {
 	Vector2 position;

@@ -645,16 +645,17 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ps.Clear();
 	}
 
+	static ParticleSaver p_saver;
 	ImGui::SameLine(0.0f, 60.0f);
 	if (ImGui::Button("Save Preset"))
 	{
-
+		p_saver.SavePreset(ps);
 	}
 
 	ImGui::SameLine(0.0f, 60.0f);
 	if (ImGui::Button("Load Preset"))
 	{
-
+		p_saver.LoadPreset(ps);
 	}
 
 	ImGui::Text("Active Particles: %d", ps.GetParticleCount());
