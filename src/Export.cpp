@@ -22,7 +22,8 @@ void ParticleSaver::SavePreset(ParticleSystem& system)
 		system.line_length,
 		system.circle_radius,
 		system.rect_size,
-		system.b_Active
+		system.b_Active,
+		system.tex_size_percent
 	};
 }
 
@@ -50,6 +51,7 @@ void ParticleSaver::LoadPreset(ParticleSystem& system)
 	system.circle_radius = PRESET.circle_radius;
 	system.rect_size = PRESET.rect_size;
 	system.b_Active = PRESET.b_Active;
+	system.tex_size_percent = PRESET.tex_size_percent;
 
 	system.Clear();
 }

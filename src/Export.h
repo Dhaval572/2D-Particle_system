@@ -25,6 +25,7 @@ struct ParticlePreset
 	float circle_radius;
 	Vector2 rect_size;
 	bool b_Active;
+	float tex_size_percent;
 };
 
 class ParticleSaver

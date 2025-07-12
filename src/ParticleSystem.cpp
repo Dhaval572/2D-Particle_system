@@ -45,7 +45,6 @@ bool ParticleSystem::b_LoadTexture(const char* filename)
 	UnloadTexture();
 
 	Image img = LoadImage(filename);
-
 	original_tex_width = img.width;
 	original_tex_height = img.height;
 

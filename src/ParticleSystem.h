@@ -10,7 +10,6 @@
 #include "Utility.h"
 #include "tinyfiledialogs.h"
 
-//class ParticleSaver;
 struct t_Particle
 {
 	Vector2 position;
@@ -68,7 +67,6 @@ protected:
 	int tex_height;
 	int new_width;
 	int new_height;
-
 	int original_tex_width;
 	int original_tex_height;
 	float tex_size_percent;
