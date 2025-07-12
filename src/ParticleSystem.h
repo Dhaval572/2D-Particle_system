@@ -27,7 +27,7 @@ struct t_Particle
 class ParticleSystem
 {
 protected:
-	friend class ParticleSaver;
+	friend class t_ParticleSaver;
 	std::vector<t_Particle> particles;
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> dist;

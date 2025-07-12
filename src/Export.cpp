@@ -51,7 +51,7 @@ static std::string sf_Vector2ToString(const Vector2& vec)
 	return oss.str();
 }
 
-void ParticleSaver::Export(ParticleSystem& system, const char* path)
+void t_ParticleSaver::Export(ParticleSystem& system, const char* path)
 {
 	std::ofstream file(std::string(path) + ".h");
 

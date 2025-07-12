@@ -4,8 +4,7 @@
 #include "ParticleSystem.h"
 
 class ParticleSystem;
-class ParticleSaver
+struct t_ParticleSaver
 {
-public:
 	void Export(ParticleSystem& system,const char* path);
 };

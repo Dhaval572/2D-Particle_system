@@ -648,7 +648,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 
 	static char s_Filename[64] = "";
-    static ParticleSaver s_Saver;
+    static t_ParticleSaver s_Saver;
     static bool sb_Export = false;
     ImGui::SameLine(0.0f, 60.0f);
     if (ImGui::Button("Export"))
