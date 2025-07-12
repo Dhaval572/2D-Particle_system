@@ -189,6 +189,11 @@ void ParticleSystem::Update(float dt)
 		emission_timer -= EMISSION_INTERVAL;
 	}
 
+	bool b_ColorTransition =
+		start_color.r != end_color.r ||
+		start_color.g != end_color.g ||
+		start_color.b != end_color.b;
+
 	// Update existing particles
 	for (size_t i = 0; i < particles.size();)
 	{
@@ -208,9 +213,7 @@ void ParticleSystem::Update(float dt)
 			p.rotation += p.rotation_speed * dt;
 			p.life -= dt;
 
-			if (start_color.r != end_color.r ||
-				start_color.g != end_color.g ||
-				start_color.b != end_color.b)
+			if (b_ColorTransition)
 			{
 				float t = 1.0f - (p.life / p.max_life);
 				p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
