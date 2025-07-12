@@ -4,7 +4,11 @@
 
 class Demo : public ParticleSystem
 {
-	
+public:
+	Demo() : ParticleSystem()
+	{
+		max_particles = 100;
+	}
 };
 
 class App

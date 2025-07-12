@@ -68,17 +68,11 @@ protected:
 	int tex_height;
 	int new_width;
 	int new_height;
-<<<<<<< HEAD
-	bool b_TextureDataCached;
 
-	// Export
-
-=======
 	int original_tex_width;
 	int original_tex_height;
 	float tex_size_percent;
-    bool b_TextureDataCached;
->>>>>>> e75fb24d008fc40e828263aec9875c546147183c
+	bool b_TextureDataCached;
 
 	Vector2 GetEmissionPoint();
 	void EmitParticle();
