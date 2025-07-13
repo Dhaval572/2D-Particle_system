@@ -236,7 +236,7 @@ void ParticleSystem::DrawEmitterShape() const
 {
 	Color shape_color = { 128, 128, 128, 100 }; // Gray with transparency
 
-	switch (e_EmitterType)
+	switch (e_EmitterType) 
 	{
 	case POINT:
 		DrawCircleV(position, 3, shape_color);
