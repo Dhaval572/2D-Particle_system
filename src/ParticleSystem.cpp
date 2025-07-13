@@ -199,32 +199,36 @@ void ParticleSystem::Update(float dt)
 	// Update existing particles
 	for (size_t i = 0; i < particles.size();)
 	{
-		t_Particle& p = particles[i];
+		t_Particle &p = particles[i];
 		if (!p.b_Active || p.life <= 0)
 		{
-			particles[i] = particles.back();
+			// Added optimization
+			std::swap(particles[i], particles.back());
 			particles.pop_back();
+			continue;
 		}
-		else
-		{
-			// Update logic
-			p.velocity.x += p.acceleration.x * dt;
-			p.velocity.y += p.acceleration.y * dt;
-			p.position.x += p.velocity.x * dt;
-			p.position.y += p.velocity.y * dt;
-			p.rotation += p.rotation_speed * dt;
-			p.life -= dt;
 
-			if (b_ColorTransition)
-			{
-				float t = 1.0f - (p.life / p.max_life);
-				p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
-				p.color.g = Clamp(start_color.g * (1.0f - t) + end_color.g * t, 0, 255);
-				p.color.b = Clamp(start_color.b * (1.0f - t) + end_color.b * t, 0, 255);
-			}
-			p.color.a = Clamp(255.0f * (p.life / p.max_life), 0, 255);
-			++i;
+		// Physics update
+		p.velocity.x += p.acceleration.x * dt;
+		p.velocity.y += p.acceleration.y * dt;
+		p.position.x += p.velocity.x * dt;
+		p.position.y += p.velocity.y * dt;
+		p.rotation += p.rotation_speed * dt;
+		p.life -= dt;
+
+		// Color fade
+		float life_ratio = p.life / p.max_life;
+		float t = 1.0f - life_ratio;
+
+		if (b_ColorTransition)
+		{
+			p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
+			p.color.g = Clamp(start_color.g * (1.0f - t) + end_color.g * t, 0, 255);
+			p.color.b = Clamp(start_color.b * (1.0f - t) + end_color.b * t, 0, 255);
 		}
+
+		p.color.a = Clamp(255.0f * life_ratio, 0, 255);
+		++i;
 	}
 }
 
