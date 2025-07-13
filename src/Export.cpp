@@ -47,14 +47,21 @@ static std::string sf_ColorToString(const Color& color)
 static std::string sf_Vector2ToString(const Vector2& vec)
 {
 	std::ostringstream oss;
-	oss << std::fixed << std::setprecision(2) << "{ " << vec.x << "f, " << vec.y << "f }";
+	oss << std::fixed
+	<< std::setprecision(2) 
+	<< "{ " 
+	<< vec.x 
+	<< "f, " 
+	<< vec.y 
+	<< "f }";
+
 	return oss.str();
 }
 
-void t_ParticleSaver::Export(ParticleSystem& system, const char* path)
+void t_ParticleSaver::Export(ParticleSystem& system, const char* save_path)
 {
-	std::ofstream file(std::string(path) + ".h");
-	std::string class_name = std::string(path).substr(std::string(path).find_last_of("/\\") + 1);
+	std::ofstream file(std::string(save_path) + ".h");
+	std::string class_name = std::filesystem::path(save_path).filename().string();
 
 	if (!file.is_open())
 		return;
