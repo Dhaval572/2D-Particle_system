@@ -11,7 +11,7 @@ A C++ particle system with real-time editing capabilities using ImGui for the UI
 - Customizable visual properties (colors, sizes, lifetimes)
 
 ## Screenshot
-![Particle System Screenshot](assets\Images\Screenshot.png)
+![Particle System Screenshot](assets/Images/Screenshot.png)
 
 ## Installation
 1. Clone the repository
