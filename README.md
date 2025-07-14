@@ -83,15 +83,6 @@ Use the **ImGui** interface to:
 
 ---
 
-## 📦 Dependencies
-
-* [Raylib](https://www.raylib.com/)
-* [ImGui](https://github.com/ocornut/imgui)
-* [rlImGui](https://github.com/raylib-extras/rlImGui)
-* [CMake](https://cmake.org/)
-
----
-
 ## 🤝 Contributing
 
 Contributions are **welcome and encouraged**!
