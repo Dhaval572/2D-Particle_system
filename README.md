@@ -89,7 +89,7 @@ Contributions are **welcome and encouraged**!
 
 Please:
 
-1. Follow standard C++ style guidelines.[View Guidelines](https://github.com/Dhaval572/2D-Particle_system/blob/main/Project_guidelines.md)
+1. Follow standard C++ style guidelines. [View Guidelines](https://github.com/Dhaval572/2D-Particle_system/blob/main/Project_guidelines.md)
 
 2. Open issues for bugs/ideas.
 3. Fork and submit pull requests for improvements.
