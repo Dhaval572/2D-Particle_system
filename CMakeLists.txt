@@ -28,7 +28,7 @@ set(TINYFILEDIALOGS tinyfiledialogs/tinyfiledialogs.c)
 
 # Copy assets to the build directory
 if(EXISTS "${CMAKE_SOURCE_DIR}/assets")
-    file(INSTALL ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
 endif()
 
 # Create executable
