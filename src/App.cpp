@@ -11,6 +11,9 @@ void App::Init()
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(0, 0, "Particle System Demo");
 	MaximizeWindow();
+	Image icon = LoadImage("assets/Images/K-icon.png");
+	SetWindowIcon(icon);
+	UnloadImage(icon);
 
 	SetTargetFPS(60);
 	rlImGuiSetup(true);
