@@ -15,7 +15,6 @@
 |  Function         | FunctionName       | CalculateSum()     |
 |  Class            | ClassName          | ParticleSystem     |
 |  Struct           | t_StructName       | t_ExportedData     |
-|  Private Member   | m_VariableName     | m_PlayerHealth     |
 |  Normal Variable  | variable_name      | current_index      |
 |  Enum Values      | VALUE1, VALUE2...  | RED, GREEN, BLUE   |
 |  Boolean Variable | b_VariableName     | b_IsActive         |
