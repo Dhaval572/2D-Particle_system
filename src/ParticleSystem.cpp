@@ -429,7 +429,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::SetNextWindowSize(ImVec2(s_width * 0.35f, s_height * 0.9f));
 	ImGui::Begin
 	(
-		"Particle System Editor",
+		"Kinesis Particle System Editor",
 		nullptr,
 		ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoMove

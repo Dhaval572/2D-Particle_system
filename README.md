@@ -1,4 +1,6 @@
-# ✨ 2D Particle System
+# ✨ Kinesis Particle System
+
+![Kinesis Particle System Logo](assets\Images\K-ParticleSystem.png)
 
 ![Platform](https://img.shields.io/badge/Platform-C%2B%2B-blue) ![Build](https://img.shields.io/badge/Build-CMake-brightgreen)
 
@@ -36,7 +38,7 @@ This project is a **2D particle system editor** written in C++ with real-time ed
 ## 📸 Screenshot
 
 
-![Particle System Screenshot](assets/Images/Screenshot.png)
+![Kinesis Particle System Screenshot](assets/Images/Screenshot.png)
 
 
 ---

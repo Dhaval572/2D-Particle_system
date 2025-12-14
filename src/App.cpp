@@ -9,7 +9,7 @@ void App::Shutdown()
 void App::Init()
 {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-	InitWindow(0, 0, "Particle System Demo");
+	InitWindow(0, 0, "Kinesis Particle System");
 	MaximizeWindow();
 	Image icon = LoadImage("assets/Images/K-icon.png");
 	SetWindowIcon(icon);
