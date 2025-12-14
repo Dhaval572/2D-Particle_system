@@ -1,6 +1,6 @@
 # ✨ Kinesis Particle System
 
-![Kinesis Particle System Logo](assets\Images\K-ParticleSystem.png)
+![Kinesis Particle System Logo](assets\Images\KParticleSystem.png)
 
 ![Platform](https://img.shields.io/badge/Platform-C%2B%2B-blue) ![Build](https://img.shields.io/badge/Build-CMake-brightgreen)
 
