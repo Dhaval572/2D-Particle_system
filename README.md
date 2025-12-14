@@ -1,8 +1,10 @@
 # ✨ Kinesis Particle System
 
-![Kinesis Particle System Logo](assets/Images/KParticleSystem.png)
-
 ![Platform](https://img.shields.io/badge/Platform-C%2B%2B-blue) ![Build](https://img.shields.io/badge/Build-CMake-brightgreen)
+
+<p align="center">
+    <img src="assets/Images/KParticleSystem.png" alt="Kinesis Particle System Logo" style="width:50%;">
+</p>
 
 > **A C++ particle system editor with real-time controls via ImGui, built on Raylib. Create, tweak, and export beautiful particle effects with ease.**
 
