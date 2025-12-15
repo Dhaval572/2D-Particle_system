@@ -48,7 +48,7 @@ This project is a **2D particle system editor** written in C++ with real-time ed
 1️⃣ Clone this repository:
 
 ```bash
-git clone https://github.com/yourusername/2DParticleSystem.git
+git clone https://github.com/Dhaval572/2D-Particle_system.git
 ```
 
 2️⃣ Install dependencies:
