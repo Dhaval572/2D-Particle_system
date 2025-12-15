@@ -69,22 +69,6 @@ cmake --build .
 
 ---
 
-## 🛠️ Usage
-
-After building:
-
-```bash
-./2DParticleSystem
-```
-
-Use the **ImGui** interface to:
-
-* 📌 Create and modify particle systems
-* 💾 Export configurations for reuse
-* 📂 Import saved configurations
-
----
-
 ## 📦 API Example
 
 The following example demonstrates how to use **one exported particle effect** at runtime.
