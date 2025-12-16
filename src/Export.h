@@ -7,5 +7,5 @@
 class ParticleSystem;
 struct t_ParticleSaver
 {
-	void Export(ParticleSystem& system,const char* path);
+	void Export(ParticleSystem& system, const char* path);
 };

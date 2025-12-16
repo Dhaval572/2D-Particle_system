@@ -1,8 +1,12 @@
 #pragma once
 #include <imgui.h>
 #include <string>
+#include <rlImGui.h>
 
-inline void ImCustomTheme(const std::string &path = "assets/Font/Roboto-Regular.ttf")
+inline void ImCustomTheme
+(
+	const std::string &path = "assets/Font/Roboto-Regular.ttf"
+)
 {
 	// Load a custom font
 	ImGuiIO &io = ImGui::GetIO();

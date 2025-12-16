@@ -48,8 +48,14 @@ bool ParticleSystem::b_LoadTexture(const char* filename)
 	original_tex_width = img.width;
 	original_tex_height = img.height;
 
-	new_width = static_cast<int>((original_tex_width * tex_size_percent) / 100);
-	new_height = static_cast<int>((original_tex_height * tex_size_percent) / 100);
+	new_width = static_cast<int>
+	(
+		(original_tex_width * tex_size_percent) / 100
+	);
+	new_height = static_cast<int>
+	(
+		(original_tex_height * tex_size_percent) / 100
+	);
 
 	if (new_width > 0 && new_height > 0)
 	{
@@ -82,7 +88,9 @@ bool ParticleSystem::b_LoadTexture(const char* filename)
 
 		b_TextureDataCached = true;
 		GenTextureMipmaps(&particle_texture);
-		SetTextureFilter(particle_texture, TEXTURE_FILTER_TRILINEAR); // For smoothness
+
+		// For smoothness
+		SetTextureFilter(particle_texture, TEXTURE_FILTER_TRILINEAR); 
 		return true;
 	}
 
@@ -95,7 +103,8 @@ void ParticleSystem::UnloadTexture()
 {
 	if (particle_texture.id > 0)
 	{
-		::UnloadTexture(particle_texture); // (Note:- :: is used to use raylib function)
+		// ( Note:- :: is used to use raylib function )
+		::UnloadTexture(particle_texture); 
 		particle_texture = {};
 	}
 	b_UseTexture = false;
@@ -181,9 +190,8 @@ void ParticleSystem::Update(float dt)
 	if (!b_Active)
 		return;
 
-	// Emit new particles
 	emission_timer += dt;
-	// Optimized this by avoiding recomputation
+
 	const float EMISSION_INTERVAL = 1.0f / emission_rate;
 	while (emission_timer >= EMISSION_INTERVAL)
 	{
@@ -222,9 +230,18 @@ void ParticleSystem::Update(float dt)
 
 		if (b_ColorTransition)
 		{
-			p.color.r = Clamp(start_color.r * (1.0f - t) + end_color.r * t, 0, 255);
-			p.color.g = Clamp(start_color.g * (1.0f - t) + end_color.g * t, 0, 255);
-			p.color.b = Clamp(start_color.b * (1.0f - t) + end_color.b * t, 0, 255);
+			p.color.r = Clamp
+			(
+				start_color.r * (1.0f - t) + end_color.r * t, 0, 255
+			);
+			p.color.g = Clamp
+			(
+				start_color.g * (1.0f - t) + end_color.g * t, 0, 255
+			);
+			p.color.b = Clamp
+			(
+				start_color.b * (1.0f - t) + end_color.b * t, 0, 255
+			);
 		}
 
 		p.color.a = Clamp(255.0f * life_ratio, 0, 255);
@@ -478,7 +495,13 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 			else
 			{
 				sb_LoadFailed = true;
-				snprintf(s_ErrorMessage, sizeof(s_ErrorMessage), "Failed to load: %s", s_TexturePath);
+				snprintf
+				(
+					s_ErrorMessage, 
+					sizeof(s_ErrorMessage), 
+					"Failed to load: %s", 
+					s_TexturePath
+				);
 			}
 		}
 	}
@@ -513,7 +536,11 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	// Status display
 	if (ps.b_IsUsingTexture())
 	{
-		ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Texture loaded and active");
+		ImGui::TextColored
+		(
+			ImVec4(0.0f, 1.0f, 0.0f, 1.0f), 
+			"Texture loaded and active"
+		);
 	}
 	else if (sb_LoadFailed)
 	{
@@ -590,7 +617,13 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		break;
 
 	case RECTANGLE:
-		ImGui::SliderFloat2("Rectangle Size", (float*)&ps.rect_size, 10.0f, 300.0f);
+		ImGui::SliderFloat2
+		(
+			"Rectangle Size", 
+			(float*)&ps.rect_size, 
+			10.0f, 
+			300.0f
+		);
 		break;
 	}
 
@@ -599,8 +632,20 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::SliderFloat("Velocity X", &ps.velocity.x, -200.0f, 200.0f);
 	ImGui::SliderFloat("Velocity Y", &ps.velocity.y, -200.0f, 200.0f);
 
-	ImGui::SliderFloat("Velocity Variation X", &ps.velocity_variation.x, 0.0f, 100.0f);
-	ImGui::SliderFloat("Velocity Variation Y", &ps.velocity_variation.y, 0.0f, 100.0f);
+	ImGui::SliderFloat
+	(
+		"Velocity Variation X", 
+		&ps.velocity_variation.x, 
+		0.0f, 
+		100.0f
+	);
+	ImGui::SliderFloat
+	(
+		"Velocity Variation Y", 
+		&ps.velocity_variation.y, 
+		0.0f, 
+		100.0f
+	);
 
 	ImGui::SliderFloat("Acceleration X", &ps.acceleration.x, -500.0f, 500.0f);
 	ImGui::SliderFloat("Acceleration Y", &ps.acceleration.y, -500.0f, 500.0f);
@@ -616,7 +661,14 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 		ImGui::Separator();
 		ImGui::Text("Colors");
 		ImVec4 start_col = ColorToImVec4(ps.start_color);
-		if (ImGui::ColorEdit4("Start Color", reinterpret_cast<float*>(&start_col)))
+		if 
+		(
+			ImGui::ColorEdit4
+			(
+				"Start Color", 
+				reinterpret_cast<float*>(&start_col)
+			)
+		)
 		{
 			ps.start_color = ImVec4ToColor(start_col);
 		}
@@ -629,10 +681,25 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	}
 	else
 	{
-		if (ImGui::SliderFloat("Texture Size (%)", &ps.tex_size_percent, 1.0f, 200.0f))
+		if 
+		(
+			ImGui::SliderFloat
+			(
+				"Texture Size (%)", 
+				&ps.tex_size_percent, 
+				1.0f, 
+				200.0f
+			)
+		)
 		{
-			ps.tex_width = static_cast<int>((ps.original_tex_width * ps.tex_size_percent) / 100);
-			ps.tex_height = static_cast<int>((ps.original_tex_height * ps.tex_size_percent) / 100);
+			ps.tex_width = static_cast<int>
+			(
+				(ps.original_tex_width * ps.tex_size_percent) / 100
+			);
+			ps.tex_height = static_cast<int>
+			(
+				(ps.original_tex_height * ps.tex_size_percent) / 100
+			);
 		}
 
 		if (ImGui::Button("Confirm size"))
