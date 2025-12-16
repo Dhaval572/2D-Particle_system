@@ -39,9 +39,7 @@ This project is a **2D particle system editor** written in C++ with real-time ed
 
 ## 📸 Screenshot
 
-
 ![Kinesis Particle System Screenshot](assets/Images/Screenshot.png)
-
 
 ---
 
@@ -50,7 +48,7 @@ This project is a **2D particle system editor** written in C++ with real-time ed
 1️⃣ Clone this repository:
 
 ```bash
-git clone https://github.com/yourusername/2DParticleSystem.git
+git clone https://github.com/Dhaval572/2D-Particle_system.git
 ```
 
 2️⃣ Install dependencies:
@@ -71,19 +69,126 @@ cmake --build .
 
 ---
 
-## 🛠️ Usage
+## 📦 API Example
 
-After building:
+The following example demonstrates how to use **one exported particle effect** at runtime.
 
-```bash
-./2DParticleSystem
+> **Important:** In this particle system, the **name comes from the exporter**. Whatever name you give to the effect during export is the name you use in code. This is a feature of the particle system editor.
+
+In this README, `Bubble` is **only an example name**. If you exported an effect named `Fire`, `Smoke`, or `Spark`, you would replace `Bubble` with that exported name everywhere.
+
+```cpp
+#include <raylib.h>
+#include "Bubble.h"
+
+int main()
+{
+    InitWindow(600, 500, "Bubble Example");
+
+    Bubble bubble;                 // Name matches the exported particle effect
+    bubble.position = {300, 250};
+
+    bubble.b_LoadTexture("assets/Bubble.png");
+    bubble.SetUseTexture(false);
+
+    SetTargetFPS(60);
+
+    while (!WindowShouldClose())
+    {
+        float dt = GetFrameTime();
+        bubble.Update(dt);
+
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        bubble.Draw();
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
+}
 ```
 
-Use the **ImGui** interface to:
+---
 
-* 📌 Create and modify particle systems
-* 💾 Export configurations for reuse
-* 📂 Import saved configurations
+## 🧩 Bubble API Reference
+
+### `b_LoadTexture(const char* path)`
+
+Loads a texture from disk and assigns it to the bubble. If loading fails, ensure the path is correct and the asset is included in your build/package.
+
+```cpp
+bubble.b_LoadTexture("assets/Bubble.png");
+```
+
+---
+
+### `SetUseTexture(bool value)`
+
+Enables or disables texture-based rendering.
+
+* `true` → Renders the bubble using the loaded texture
+* `false` → Renders the bubble using basic shapes (circle)
+
+```cpp
+bubble.SetUseTexture(false);
+```
+
+> **Default value:** `true`
+
+---
+
+### `bool b_IsUsingTexture() const`
+
+Returns whether the bubble is currently using a texture for rendering.
+
+#### Example:
+
+```cpp
+if (bubble.b_IsUsingTexture())
+{
+    // Texture-based rendering is enabled
+}
+else
+{
+    // Primitive-based rendering is enabled
+}
+```
+
+**Returns:**
+
+* `true` → Texture rendering is active
+* `false` → Primitive rendering is active
+
+---
+
+### `Update(float deltaTime)`
+
+Updates bubble behavior such as movement, lifetime, or animations.
+
+```cpp
+bubble.Update(dt);
+```
+
+---
+
+### `Draw()`
+
+Renders the bubble using either the texture or primitive rendering method.
+
+```cpp
+bubble.Draw();
+```
+
+---
+
+## 💡 Notes
+
+* The `Bubble` example is illustrative only — replace the class/header names to match your own types.
+* Keep header filenames and class names consistent to avoid confusion and make your API easy to use.
+* If you export a class from a header, prefer the convention: `HeaderName.h` contains `class HeaderName { ... };`.
 
 ---
 
@@ -94,7 +199,6 @@ Contributions are **welcome and encouraged**!
 Please:
 
 1. Follow standard C++ style guidelines. [View Guidelines](https://github.com/Dhaval572/2D-Particle_system/blob/main/Project_guidelines.md)
-
 2. Open issues for bugs/ideas.
 3. Fork and submit pull requests for improvements.
 
@@ -111,5 +215,3 @@ Please:
 ## 🌟 Star this repository!
 
 If you find this project useful, please consider ⭐️ starring it on GitHub to help others discover it.
-
----
