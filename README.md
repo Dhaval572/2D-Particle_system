@@ -43,7 +43,20 @@ This project is a **2D particle system editor** written in C++ with real-time ed
 
 ---
 
-## 🚀 Installation
+# Download
+
+**No Installation Required** – Simply download and run!
+
+Get the complete particle system editor as a standalone executable. No build setup, dependencies, or compilation needed.
+
+## Download Links
+
+### [📦 Download](https://dhaval-parmar.itch.io/kinesis-particle-system)
+---
+
+# 🛠️ Build from Source
+
+*If you're a developer who wants to customize, contribute, or understand how the particle system works under the hood, you can build it from source.*
 
 1️⃣ Clone this repository:
 
@@ -211,7 +224,6 @@ Please:
 * [rlImGui](https://github.com/raylib-extras/rlImGui) – for seamless integration with Raylib.
 
 ---
-
 ## 🌟 Star this repository!
 
 If you find this project useful, please consider ⭐️ starring it on GitHub to help others discover it.
