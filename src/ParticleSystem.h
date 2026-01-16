@@ -76,7 +76,7 @@ protected:
 	void EmitParticle();
 	void DrawEmitterShape() const;
 	void Clear();
-	int GetParticleCount() const;
+	size_t GetParticleCount() const;
 	friend void DrawParticleSystemUI(ParticleSystem& ps);
 
 public:

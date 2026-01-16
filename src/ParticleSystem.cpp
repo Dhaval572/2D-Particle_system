@@ -1,7 +1,10 @@
 ﻿#include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem()
-    : max_particles(1000),
+	: max_particles(1000),
+	  texture_source_rect({}),
+	  texture_half_size({}),
+	  texture_center({}),
 	  rng(std::random_device{}()),
 	  dist(0.0f, 1.0f),
 	  position({}),
@@ -27,9 +30,12 @@ ParticleSystem::ParticleSystem()
 	  b_Active(true),
 	  tex_width(0),
 	  tex_height(0),
+	  new_width(0),
+	  new_height(0),
 	  original_tex_width(0),
 	  original_tex_height(0),
-	  tex_size_percent(100.f)
+	  tex_size_percent(100.f),
+	  b_TextureDataCached(false)
 {  
 	particles.reserve(max_particles);
 }
@@ -168,7 +174,7 @@ void ParticleSystem::EmitParticle()
 	if (particles.size() >= max_particles)
 		return;
 
-	t_Particle p;
+	t_Particle p{};
 	p.position = GetEmissionPoint();
 	p.velocity =
 	{
@@ -182,7 +188,7 @@ void ParticleSystem::EmitParticle()
 	p.rotation = 0;
 	p.rotation_speed = rotation_speed + (dist(rng) - 0.5f) * 2.0f;
 	p.b_Active = true;
-	particles.push_back(p);
+	particles.emplace_back(p);
 }
 
 void ParticleSystem::Update(float dt)
@@ -207,14 +213,14 @@ void ParticleSystem::Update(float dt)
 	// Update existing particles
 	for (size_t i = 0; i < particles.size();)
 	{
-		t_Particle &p = particles[i];
-		if (!p.b_Active || p.life <= 0)
+		if (!particles[i].b_Active || particles[i].life <= 0.0f)
 		{
 			// Added optimization
 			std::swap(particles[i], particles.back());
 			particles.pop_back();
 			continue;
 		}
+		t_Particle& p = particles[i];
 
 		// Physics update
 		p.velocity.x += p.acceleration.x * dt;
@@ -226,6 +232,7 @@ void ParticleSystem::Update(float dt)
 
 		// Color fade
 		float life_ratio = p.life / p.max_life;
+		life_ratio = Clamp(life_ratio, 0.0f, 1.0f);
 		float t = 1.0f - life_ratio;
 
 		if (b_ColorTransition)
@@ -338,87 +345,92 @@ void ParticleSystem::Draw()
 			// Draw geometric shapes 
 			switch (e_ParticleType)
 			{
-			case CIRCULER:
-			{
-				DrawCircleV(p.position, p.size, p.color);
-				break;
-			}
-
-			case SQUARE:
-			{
-				Rectangle rect =
+				case CIRCULER:
 				{
-					p.position.x - p.size / 2,
-					p.position.y - p.size / 2,
-					p.size,
-					p.size
-				};
-
-				DrawRectanglePro
-				(
-					rect,
-					{ p.size / 2, p.size / 2 },
-					p.rotation * RAD2DEG,
-					p.color
-				);
-				break;
-			}
-
-			case TRIANGLE:
-			{
-				DrawPoly
-				(
-					p.position,
-					3,
-					p.size,
-					p.rotation * RAD2DEG,
-					p.color
-				);
-				break;
-			}
-
-			case K_CHAR:
-			{
-				Vector2 vertices[6] =
-				{
-					{-p.size / 2, p.size / 2},	// Top-left (vertical line top)
-					{-p.size / 2, -p.size / 2}, // Bottom-left (vertical line bottom)
-					{-p.size / 2, 0},			// Middle-left (center junction)
-					{p.size / 2, p.size / 2},	// Top-right (upper diagonal end)
-					{p.size / 2, -p.size / 2},	// Bottom-right (lower diagonal end)
-					{-p.size / 2, 0}			// Middle-left (center junction - repeated for connection)
-				};
-
-				// Define the lines that make up the K shape
-				int lines[][2] =
-				{
-					{0, 1}, // Vertical line (left side)
-					{2, 3}, // Upper diagonal
-					{2, 4}	// Lower diagonal
-				};
-
-				// Draw each line of the K
-				for (int i = 0; i < 3; ++i)
-				{
-					Vector2& v1 = vertices[lines[i][0]];
-					Vector2& v2 = vertices[lines[i][1]];
-
-					// Apply rotation transformation
-					Vector2 a =
-					{
-						p.position.x + v1.x * cosf(p.rotation) - v1.y * sinf(p.rotation),
-						p.position.y + v1.x * sinf(p.rotation) + v1.y * cosf(p.rotation)
-					};
-					Vector2 b =
-					{
-						p.position.x + v2.x * cosf(p.rotation) - v2.y * sinf(p.rotation),
-						p.position.y + v2.x * sinf(p.rotation) + v2.y * cosf(p.rotation)
-					};
-
-					DrawLineEx(a, b, 2, p.color);
+					DrawCircleV(p.position, p.size, p.color);
+					break;
 				}
-				break;
-			}
+
+				case SQUARE:
+				{
+					Rectangle rect =
+					{
+						p.position.x - p.size / 2,
+						p.position.y - p.size / 2,
+						p.size,
+						p.size
+					};
+
+					DrawRectanglePro
+					(
+						rect,
+						{ p.size / 2, p.size / 2 },
+						p.rotation * RAD2DEG,
+						p.color
+					);
+					break;
+				}
+
+				case TRIANGLE:
+				{
+					DrawPoly
+					(
+						p.position,
+						3,
+						p.size,
+						p.rotation * RAD2DEG,
+						p.color
+					);
+					break;
+				}
+
+				case K_CHAR:
+				{
+					Vector2 vertices[6] =
+					{
+						{-p.size / 2, p.size / 2},	// Top-left (vertical line top)
+						{-p.size / 2, -p.size / 2}, // Bottom-left (vertical line bottom)
+						{-p.size / 2, 0},			// Middle-left (center junction)
+						{p.size / 2, p.size / 2},	// Top-right (upper diagonal end)
+						{p.size / 2, -p.size / 2},	// Bottom-right (lower diagonal end)
+						{-p.size / 2, 0}			// Middle-left (center junction - repeated	for connection)
+					};
+
+					// Define the lines that make up the K shape
+					int lines[][2] =
+					{
+						{0, 1}, // Vertical line (left side)
+						{2, 3}, // Upper diagonal
+						{2, 4}	// Lower diagonal
+					};
+
+					// Pre-compute
+					const float cos_theta = cosf(p.rotation);
+					const float sin_theta = sinf(p.rotation);
+					const Vector2& pos = p.position;
+
+					// Draw each line of the K
+					for (int i = 0; i < 3; ++i)
+					{
+						const Vector2& v1 = vertices[lines[i][0]];
+						const Vector2& v2 = vertices[lines[i][1]];
+
+						// Apply rotation transformation
+						Vector2 a =
+						{
+							pos.x + v1.x * cos_theta - v1.y * sin_theta,
+							pos.y + v1.x * sin_theta + v1.y * cos_theta
+						};
+						Vector2 b =
+						{
+							pos.x + v2.x * cos_theta - v2.y * sin_theta,
+							pos.y + v2.x * sin_theta + v2.y * cos_theta
+						};
+
+						DrawLineEx(a, b, 2, p.color);
+					}
+					break;
+				}
 
 			}
 		}
@@ -433,7 +445,7 @@ void ParticleSystem::Clear()
 	particles.clear();
 }
 
-int ParticleSystem::GetParticleCount() const
+size_t ParticleSystem::GetParticleCount() const
 {
 	return particles.size();
 }
