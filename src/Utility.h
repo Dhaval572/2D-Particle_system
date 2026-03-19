@@ -9,7 +9,7 @@ inline ImVec4 ColorToImVec4(const Color &C)
 		static_cast<float>(C.b) / 255.0f,
 		static_cast<float>(C.a) / 255.0f
 	);
-}
+}   
 
 inline Color ImVec4ToColor(const ImVec4 &V)
 {

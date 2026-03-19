@@ -1,7 +1,6 @@
 #pragma once
-#include <optional>
-#include <fstream>
-#include <filesystem>
+#include <fstream> // IWYU pragma: keep
+#include <filesystem> // IWYU pragma: keep
 #include "ParticleSystem.h"
 
 class ParticleSystem;

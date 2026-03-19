@@ -52,7 +52,7 @@ bool ParticleSystem::b_LoadTexture(const char* filename)
 
 	Image img = LoadImage(filename);
 	original_tex_width = img.width;
-	original_tex_height = img.height;
+	original_tex_height = img.height;   
 
 	new_width = static_cast<int>
 	(
@@ -171,7 +171,7 @@ Vector2 ParticleSystem::GetEmissionPoint()
 
 void ParticleSystem::EmitParticle()
 {
-	if (particles.size() >= max_particles)
+	if (static_cast<int>(particles.size()) >= max_particles)
 		return;
 
 	t_Particle p{};
@@ -484,7 +484,6 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 	ImGui::TextWrapped("Path: %s", s_TexturePath);
 	if (ImGui::Button("Load"))
 	{
-		static const char* FILTERS[4] = { ".png", ".jpg", ".jpeg", ".bmp" };
 		const char* PATH = tinyfd_openFileDialog
 		(
 			"Select Texture File",
@@ -637,9 +636,11 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 			300.0f
 		);
 		break;
-	}
+        case POINT:
+          break;
+        }
 
-	ImGui::Separator();
+        ImGui::Separator();
 	ImGui::Text("Particle Properties");
 	ImGui::SliderFloat("Velocity X", &ps.velocity.x, -200.0f, 200.0f);
 	ImGui::SliderFloat("Velocity Y", &ps.velocity.y, -200.0f, 200.0f);
@@ -732,7 +733,7 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	static char s_Filename[64] = "";
     static t_ParticleSaver s_Saver;
-    static bool sb_Export = false;
+    [[maybe_unused]] static bool sb_Export = false;
     ImGui::SameLine(0.0f, 60.0f);
     if (ImGui::Button("Export"))
     {
@@ -770,6 +771,6 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 
 	}
 
-	ImGui::Text("Active Particles: %d", ps.GetParticleCount());
+	ImGui::Text("Active Particles: %d", static_cast<int>(ps.GetParticleCount()));
 	ImGui::End();
 }

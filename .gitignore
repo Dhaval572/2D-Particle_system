@@ -4,4 +4,6 @@ main
 build
 .vscode
 .vs
+.compile_commands.json
 out
+.cache/

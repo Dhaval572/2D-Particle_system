@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 project(2D_Particle_system)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -43,10 +44,10 @@ if(UNIX AND NOT APPLE)
     target_compile_definitions(main PRIVATE TINYFILEDIALOGS_IMPLEMENTATION)
 endif()
 
-target_include_directories(main PRIVATE 
-    ${raylib_SOURCE_DIR}/src 
-    ${CMAKE_SOURCE_DIR}/imgui 
-    ${CMAKE_SOURCE_DIR}/rlImGui 
+target_include_directories(main PRIVATE
+    ${raylib_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/imgui
+    ${CMAKE_SOURCE_DIR}/rlImGui
     ${CMAKE_SOURCE_DIR}/tinyfiledialogs
     ${CMAKE_SOURCE_DIR}/src
 )

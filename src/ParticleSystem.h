@@ -7,8 +7,8 @@
 #include <random>
 #include <raymath.h>
 #include "Export.h"
-#include "Utility.h"
-#include "tinyfiledialogs.h"
+#include <Utility.h>
+#include <tinyfiledialogs.h>
 
 struct t_Particle
 {
@@ -27,7 +27,7 @@ struct t_Particle
 class ParticleSystem
 {
 protected:
-	friend class t_ParticleSaver;
+	friend struct t_ParticleSaver;
 	std::vector<t_Particle> particles;
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> dist;
