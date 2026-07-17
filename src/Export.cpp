@@ -19,7 +19,7 @@ namespace
 	    }
     }
 
-    static std::string sf_ParticleTypeToString(ParticleType type)
+    std::string sf_ParticleTypeToString(ParticleType type)
     {
         switch (type)
         {
@@ -33,7 +33,7 @@ namespace
     }
 
     // Helper function to format Color as initializer
-    static std::string sf_ColorToString(const Color& color)
+    std::string sf_ColorToString(const Color& color)
     {
         std::ostringstream oss;
         oss << "{ " << 
@@ -46,7 +46,7 @@ namespace
     }
 
     // Helper function to format Vector2 as initializer
-    static std::string sf_Vector2ToString(const Vector2& vec)
+    std::string sf_Vector2ToString(const Vector2& vec)
     {
         std::ostringstream oss;
         oss << std::fixed
@@ -60,6 +60,7 @@ namespace
         return oss.str();
     }
 }
+
 void t_ParticleSaver::Export(ParticleSystem& system, const char* save_path)
 {
 	std::ofstream file(std::string(save_path) + ".h");
