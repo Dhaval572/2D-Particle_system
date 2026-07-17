@@ -3,61 +3,63 @@
 #include <iomanip>
 #include <string>
 
-// Helper function to convert enum to string
-static std::string sf_EmitterTypeToString(EmitterType type)
+namespace 
 {
-	switch (type)
-	{
-		case POINT: return "POINT";
-		case LINE: return "LINE";
-		case CIRCLE: return "CIRCLE";
-		case RECTANGLE: return "RECTANGLE";
+    // Helper function to convert enum to string
+    std::string sf_EmitterTypeToString(EmitterType type)
+    {
+        switch (type)
+        {
+		    case POINT: return "POINT";
+		    case LINE: return "LINE";
+		    case CIRCLE: return "CIRCLE";
+		    case RECTANGLE: return "RECTANGLE";
 
-		default: return "POINT";
-	}
+		    default: return "POINT";
+	    }
+    }
+
+    static std::string sf_ParticleTypeToString(ParticleType type)
+    {
+        switch (type)
+        {
+            case CIRCULER: return "CIRCULER";
+            case SQUARE: return "SQUARE";
+            case TRIANGLE: return "TRIANGLE";
+            case K_CHAR: return "K_CHAR";
+            
+            default: return "CIRCULER";
+        }
+    }
+
+    // Helper function to format Color as initializer
+    static std::string sf_ColorToString(const Color& color)
+    {
+        std::ostringstream oss;
+        oss << "{ " << 
+        static_cast<int>(color.r) << ", " << 
+        static_cast<int>(color.g) << ", " << 
+        static_cast<int>(color.b) << ", " << 
+        static_cast<int>(color.a) << " }";
+        
+        return oss.str();
+    }
+
+    // Helper function to format Vector2 as initializer
+    static std::string sf_Vector2ToString(const Vector2& vec)
+    {
+        std::ostringstream oss;
+        oss << std::fixed
+        << std::setprecision(2) 
+        << "{ " 
+        << vec.x 
+        << "f, " 
+        << vec.y 
+        << "f }";
+        
+        return oss.str();
+    }
 }
-
-static std::string sf_ParticleTypeToString(ParticleType type)
-{
-	switch (type)
-	{
-		case CIRCULER: return "CIRCULER";
-		case SQUARE: return "SQUARE";
-		case TRIANGLE: return "TRIANGLE";
-		case K_CHAR: return "K_CHAR";
-		
-		default: return "CIRCULER";
-	}
-}
-
-// Helper function to format Color as initializer
-static std::string sf_ColorToString(const Color& color)
-{
-	std::ostringstream oss;
-	oss << "{ " << 
-	static_cast<int>(color.r) << ", " << 
-	static_cast<int>(color.g) << ", " << 
-	static_cast<int>(color.b) << ", " << 
-	static_cast<int>(color.a) << " }";
-
-	return oss.str();
-}
-
-// Helper function to format Vector2 as initializer
-static std::string sf_Vector2ToString(const Vector2& vec)
-{
-	std::ostringstream oss;
-	oss << std::fixed
-	<< std::setprecision(2) 
-	<< "{ " 
-	<< vec.x 
-	<< "f, " 
-	<< vec.y 
-	<< "f }";
-
-	return oss.str();
-}
-
 void t_ParticleSaver::Export(ParticleSystem& system, const char* save_path)
 {
 	std::ofstream file(std::string(save_path) + ".h");
