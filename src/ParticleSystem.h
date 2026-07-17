@@ -76,7 +76,7 @@ protected:
 	void EmitParticle();
 	void DrawEmitterShape() const;
 	void Clear();
-	size_t GetParticleCount() const;
+	[[nodiscard]] size_t GetParticleCount() const;
 	friend void DrawParticleSystemUI(ParticleSystem& ps);
 
 public:
@@ -91,5 +91,5 @@ public:
 	bool b_LoadTexture(const char* filename);
 	void UnloadTexture();
 	void SetUseTexture(bool use);
-	bool b_IsUsingTexture() const;
+	[[nodiscard]] bool b_IsUsingTexture() const;
 };

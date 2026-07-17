@@ -410,10 +410,10 @@ void ParticleSystem::Draw()
 					const Vector2& pos = p.position;
 
 					// Draw each line of the K
-					for (int i = 0; i < 3; ++i)
+					for (auto & line : lines)
 					{
-						const Vector2& v1 = vertices[lines[i][0]];
-						const Vector2& v2 = vertices[lines[i][1]];
+						const Vector2& v1 = vertices[line[0]];
+						const Vector2& v2 = vertices[line[1]];
 
 						// Apply rotation transformation
 						Vector2 a =
@@ -452,10 +452,10 @@ size_t ParticleSystem::GetParticleCount() const
 
 void DrawParticleSystemUI(ParticleSystem& ps)
 {
-	float s_width = static_cast<float>(GetScreenWidth());
-	float s_height = static_cast<float>(GetScreenHeight());
-	ImGui::SetNextWindowPos(ImVec2(s_width * 0.654f, s_height * 0.06f));
-	ImGui::SetNextWindowSize(ImVec2(s_width * 0.35f, s_height * 0.9f));
+	auto s_Width = static_cast<float>(GetScreenWidth());
+	auto s_Height = static_cast<float>(GetScreenHeight());
+	ImGui::SetNextWindowPos(ImVec2(s_Width * 0.654f, s_Height * 0.06f));
+	ImGui::SetNextWindowSize(ImVec2(s_Width * 0.35f, s_Height * 0.9f));
 	ImGui::Begin
 	(
 		"Kinesis Particle System Editor",
@@ -753,8 +753,8 @@ void DrawParticleSystemUI(ParticleSystem& ps)
 				"Save location: ",
 				s_Filename,
 				1,
-				NULL,
-				NULL
+				nullptr,
+				nullptr
 			);
 
 			if (SAVE_PATH && SAVE_PATH[0] != '\0')

@@ -38,6 +38,6 @@ echo "Running clang-tidy with checks: ${CHECKS:-all from .clang-tidy}"
 echo ""
 
 for f in "$SRC_DIR"/*.cpp; do
-  echo "=== Analyzing $f ==="
+  echo "Analyzing $f"
   clang-tidy -p "$BUILD_DIR" $CHECKS_FLAG $FIX_FLAG "$f"
 done
